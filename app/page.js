@@ -27,8 +27,8 @@ export default function Home() {
   return (
     <main className="bg-blue-200 w-screen h-[100vh] overflow-hidden ">
       <div className="flex flex-col justify-center items-center pt-10 px-5">
-        <h2 className="text-3xl font-bold text-center mb-5">Welcome back to e-depo {session.user.email} dashboard</h2>
-        <h3 className="text-xl font-bold text-center">You are logged in</h3>
+        <h2 className="text-3xl font-bold text-center mb-5">Welcome back to e-depo {session.user.name} dashboard</h2>
+        <h3 className="text-xl font-bold text-center">You are logged in with {session.user.email}</h3>
       </div>
       <div className="flex flex-col justify-start items-center h-full mt-24">
         <div className="flex gap-4">
