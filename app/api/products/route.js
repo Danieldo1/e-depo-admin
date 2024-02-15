@@ -14,3 +14,13 @@ export async function GET() {
     return Response.json(products);
   }
 
+export async function PUT(req) {
+  await connectDB();
+  const { _id, title, description, price } = await req.json();
+  const updatedProduct = await Product.findOneAndUpdate(
+    { _id },
+    { title, description, price },
+   
+  );
+  return Response.json(updatedProduct);
+}
