@@ -4,3 +4,20 @@
 
 
 
+input, textarea{
+    @apply border-2 border-gray-500 rounded-md p-2 w-full mb-2
+}
+input:focus, textarea:focus{
+    @apply border-blue-500
+}
+.heading {
+    @apply text-xl font-bold mb-10
+}
+
+label {
+    @apply font-bold text-sm -mb-2
+}
+
+.btn-save {
+    @apply bg-green-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-green-600
+}

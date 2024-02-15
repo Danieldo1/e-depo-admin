@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.3.3",
+    "axios": "^1.6.7",
     "lucide-react": "^0.330.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.2",
