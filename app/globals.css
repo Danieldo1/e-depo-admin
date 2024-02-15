@@ -25,3 +25,7 @@ label {
 .btn-edit {
     @apply bg-blue-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-blue-600
 }
+
+.btn-back {
+    @apply bg-gray-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-gray-600
+}

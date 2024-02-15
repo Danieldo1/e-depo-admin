@@ -3,7 +3,7 @@
 import Layout from "@/components/Layout";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { PackagePlus } from "lucide-react";
+import { PackagePlus,Trash2 } from "lucide-react";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -39,8 +39,11 @@ const ProductsPage = () => {
               <h1 className="text-xl font-bold">{product.title}</h1>
               <p className="text-sm line-clamp-1">{product.description}</p>
               </div>
-              <div>
+              <div  className="flex gap-5 items-center">
               <h1 className="text-xl font-bold">{product.price}</h1>
+              <Link href={`/products/delete/${product._id}`} className="bg-red-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-red-600">
+              <Trash2 />
+              </Link>
               </div>
             </div>
           </Link>

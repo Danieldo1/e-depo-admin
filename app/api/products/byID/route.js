@@ -9,4 +9,9 @@ export async function GET(req) {
       return Response.json(products);
     }
   
-  
+  export async function DELETE(req) {
+    await connectDB();
+    const id =await req.url.split("/").pop().split('=').pop();
+    const deletedProduct = await Product.findOneAndDelete({ _id: id });
+    return Response.json(deletedProduct);
+  }

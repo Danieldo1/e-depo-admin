@@ -2,11 +2,11 @@
 
 import Layout from "@/components/Layout";
 import React, { useState } from "react";
-import { Plus,PencilLine } from "lucide-react";
+import { Plus, PencilLine } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 const ProductForm = ({
-    _id,
+  _id,
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
@@ -17,28 +17,26 @@ const ProductForm = ({
   const [redirect, setRedirect] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-console.log({_id})
+
   const createNewProduct = async (e) => {
     e.preventDefault();
     const data = { title, description, price };
-    if(_id){
-      
-        await fetch(`/api/products`, {
-            method: "PUT",
-            body: JSON.stringify({...data, _id}),
-            headers: {
-              "Content-Type": "application/json",
-            },
-        })
+    if (_id) {
+      await fetch(`/api/products`, {
+        method: "PUT",
+        body: JSON.stringify({ ...data, _id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     } else {
-        
-        await fetch("/api/products", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      await fetch("/api/products", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
     setRedirect(true);
   };
@@ -73,18 +71,22 @@ console.log({_id})
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
-
-      {pathname.includes("/edit") ? (
-        <button className="btn-edit" type="submit">
-          <PencilLine />
-          Save Changes
+      <div className="flex justify-between">
+        <button className="btn-back" onClick={() => router.back()}>
+          Back
         </button>
-      ) : (
-        <button className="btn-save" type="submit">
-          <Plus />
-          Add Product
-        </button>
-      )}
+        {pathname.includes("/edit") ? (
+          <button className="btn-edit" type="submit">
+            <PencilLine />
+            Save Changes
+          </button>
+        ) : (
+          <button className="btn-save" type="submit">
+            <Plus />
+            Add Product
+          </button>
+        )}
+      </div>
     </form>
   );
 };
