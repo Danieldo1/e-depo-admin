@@ -29,3 +29,7 @@ label {
 .btn-back {
     @apply bg-gray-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-gray-600
 }
+
+.btn-upload {
+    @apply bg-gray-200 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-gray-300 w-32 h-32 justify-center text-center border-dashed border-2 border-blue-400
+}

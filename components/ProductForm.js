@@ -1,19 +1,21 @@
 "use client";
 
-import Layout from "@/components/Layout";
 import React, { useState } from "react";
-import { Plus, PencilLine } from "lucide-react";
+import { Plus, PencilLine, UploadCloud } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
 
 const ProductForm = ({
   _id,
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
+  productImages: currentPhotos,
 }) => {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
+  const [photos, setPhotos] = useState(currentPhotos || '');
   const [redirect, setRedirect] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -44,12 +46,49 @@ const ProductForm = ({
   if (redirect) {
     router.push("/products");
   }
+
+  const uploadPhotos = async (e) => {
+    const files = e.target.files;
+    if (files?.length === 1) {
+      const data = new FormData();
+      data.set("file", files[0]);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
+      const link = await res.json();
+      setPhotos(link);
+    }
+  };
   return (
     <form
       onSubmit={(e) => {
         createNewProduct(e);
       }}
     >
+      <label>Product Photos</label>
+      <div className="my-3 flex flex-wrap gap-2">
+        {photos && (
+          <div className="flex gap-2">
+            <div className="h-24 inline-block ">
+              <Image
+                src={photos}
+                alt="user image"
+                width={200}
+                height={200}
+                className="w-full rounded-md"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* {!productImages?.length && <p className="">Add product images</p>} */}
+        <label className="btn-upload hover:cursor-pointer">
+          <UploadCloud className="w-12 h-12 text-blue-500" />
+          <input type="file" className="hidden" onChange={uploadPhotos} />
+        </label>
+      </div>
+
       <label htmlFor="">Product Name</label>
       <input
         type="text"
