@@ -3,12 +3,15 @@
 import Layout from "@/components/Layout";
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 const NewProducts = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [redirect, setRedirect] = useState(false);
+  const router = useRouter();
 
   const createNewProduct = async (e, ) => {
     e.preventDefault();
@@ -21,7 +24,11 @@ const NewProducts = () => {
       'Content-Type': 'application/json'
     }
    })
+   setRedirect(true);
+  }
 
+  if(redirect){
+     router.push('/products')
   }
 
   return (
