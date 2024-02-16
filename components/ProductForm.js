@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Plus, PencilLine, UploadCloud,Loader2 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
-import Image from "next/image";
+import { ReactSortable } from "react-sortablejs";
 
 const ProductForm = ({
   _id,
@@ -76,20 +76,22 @@ const ProductForm = ({
     >
       <label>Product Photos</label>
       <div className="my-3 flex flex-wrap gap-2">
-        {uploading === true ?(
-         <div
+        <ReactSortable list={images} setList={setImages}  className="flex flex-wrap gap-2">
+        {!!images.length  ?(
+          images.map((link) => (
+            <div key={link} className="relative h-28 w-28 rounded-md overflow-hidden ">
+              <img  src={link} alt="Save the product for image to appear" className="object-cover w-full h-full" />
+            </div>
+          ))
+        ):(
+          <div
           className="btn-upload rounded-md">
           <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
         </div>
          
-        ):(
-          images.map((link) => (
-            <div key={link} className="relative h-20 w-20 rounded-md">
-              <img  src={link} alt="Save the product for image to appear" className="object-cover" />
-            </div>
-          ))
         )
         }
+        </ReactSortable>
 
         {/* {!productImages?.length && <p className="">Add product images</p>} */}
         <label className="btn-upload hover:cursor-pointer">

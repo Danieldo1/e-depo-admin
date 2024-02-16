@@ -1,12 +1,12 @@
 import React from 'react'
 import Layout from '@/components/Layout'
 
-const OrdersPage = () => {
+const CategoryPage = () => {
   return (
     <Layout>
-        <h1 className="heading">Orders Page</h1>
+        <h1 className="heading">Category Page</h1>
     </Layout>
   )
 }
 
-export default OrdersPage
+export default CategoryPage
