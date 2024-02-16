@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, PencilLine, UploadCloud,Loader2 } from "lucide-react";
+import { Plus, PencilLine, UploadCloud,Loader2,Trash2 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { ReactSortable } from "react-sortablejs";
 
@@ -68,6 +68,16 @@ const ProductForm = ({
       setUploading(false);
     };
   }
+
+  const handleDeleteImage = (index) => {
+    // Create a copy of the current images array
+    const updatedImages = [...images];
+    // Remove the image at the specified index
+    updatedImages.splice(index, 1);
+    // Update the state with the modified array (removing the deleted image)
+    setImages(updatedImages);
+  };
+
   return (
     <form
       onSubmit={(e) => {
@@ -78,10 +88,11 @@ const ProductForm = ({
       <div className="my-3 flex flex-wrap gap-2">
         <ReactSortable list={images} setList={setImages}  className="flex flex-wrap gap-2">
         {!!images.length  ?(
-          images.map((link) => (
-            <div key={link} className="relative h-28 w-28 rounded-md overflow-hidden ">
-              <img  src={link} alt="Save the product for image to appear" className="object-cover w-full h-full" />
-            </div>
+          images.map((link, index) => (
+            <div key={link} className="relative group w-28 h-28 cursor-move rounded-md border">
+            <img src={link} alt="Product Image" className="object-cover w-full h-full rounded-md" />
+            <button onClick={() => handleDeleteImage(index)} className="hidden group-hover:block absolute top-0 left-0 p-2 bg-red-500 text-white rounded-full"><Trash2 /></button>
+          </div>
           ))
         ):(
           <div
