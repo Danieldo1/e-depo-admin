@@ -85,7 +85,7 @@ const ProductForm = ({
         ):(
           images.map((link) => (
             <div key={link} className="relative h-20 w-20 rounded-md">
-              <img  src={link} alt="Save the product for image to appear" fill className="object-cover" />
+              <img  src={link} alt="Save the product for image to appear" className="object-cover" />
             </div>
           ))
         )

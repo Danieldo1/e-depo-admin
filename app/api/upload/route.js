@@ -6,7 +6,7 @@ export async function POST(req) {
   if (data.get("file")) {
     const file = data.get("file");
     const s3CLient = new S3Client({
-      region: "us-east-1",
+      region: "eu-north-1",
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
