@@ -17,7 +17,6 @@ const EditProduct = () => {
   const fetchOneProduct = async () => {
     await fetch(`/api/products/byID?id=${id}`).then((response) => {
       response.json().then((data) => {
-        console.log(data);
         setProduct(data);
       });
     });

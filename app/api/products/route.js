@@ -3,8 +3,8 @@ import { Product } from "@/lib/models/Product";
 
 export async function POST(req) {
   await connectDB();
-  const { title, description, price } = await req.json();
-  const newProduct = await Product.create({ title, description, price });
+  const { title, description, price,images } = await req.json();
+  const newProduct = await Product.create({ title, description, price,images });
   return Response.json(newProduct);
 }
 
@@ -16,10 +16,10 @@ export async function GET() {
 
 export async function PUT(req) {
   await connectDB();
-  const { _id, title, description, price } = await req.json();
+  const { _id, title, description, price,images } = await req.json();
   const updatedProduct = await Product.findOneAndUpdate(
     { _id },
-    { title, description, price },
+    { title, description, price,images },
    
   );
   return Response.json(updatedProduct);

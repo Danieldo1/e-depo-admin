@@ -3,9 +3,7 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'https',
                 hostname:'e-depo.s3.amazonaws.com',
-
             },
         ],
     },

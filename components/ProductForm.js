@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, PencilLine, UploadCloud } from "lucide-react";
+import { Plus, PencilLine, UploadCloud,Loader2 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 
@@ -10,19 +10,20 @@ const ProductForm = ({
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
-  productImages: currentPhotos,
+  images: currentPhotos,
 }) => {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
-  const [photos, setPhotos] = useState(currentPhotos || '');
+  const [images, setImages] = useState(currentPhotos || []);
   const [redirect, setRedirect] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   const createNewProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price };
+    const data = { title, description, price, images };
     if (_id) {
       await fetch(`/api/products`, {
         method: "PUT",
@@ -49,17 +50,24 @@ const ProductForm = ({
 
   const uploadPhotos = async (e) => {
     const files = e.target.files;
-    if (files?.length === 1) {
+    if (files?.length > 0) {
+      setUploading(true);
       const data = new FormData();
-      data.set("file", files[0]);
+      for (const file of files) {
+        data.append("file", file);
+      }
       const res = await fetch("/api/upload", {
         method: "POST",
         body: data,
       });
+
       const link = await res.json();
-      setPhotos(link);
-    }
-  };
+      setImages((prev) => {
+        return [...prev, ...link];
+      });
+      setUploading(false);
+    };
+  }
   return (
     <form
       onSubmit={(e) => {
@@ -68,19 +76,20 @@ const ProductForm = ({
     >
       <label>Product Photos</label>
       <div className="my-3 flex flex-wrap gap-2">
-        {photos && (
-          <div className="flex gap-2">
-            <div className="h-24 inline-block ">
-              <Image
-                src={photos}
-                alt="user image"
-                width={200}
-                height={200}
-                className="w-full rounded-md"
-              />
+        {uploading === true ?(
+         <div
+          className="btn-upload rounded-md">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+        </div>
+         
+        ):(
+          images.map((link) => (
+            <div key={link} className="relative h-20 w-20 rounded-md">
+              <img  src={link} alt="Save the product for image to appear" fill className="object-cover" />
             </div>
-          </div>
-        )}
+          ))
+        )
+        }
 
         {/* {!productImages?.length && <p className="">Add product images</p>} */}
         <label className="btn-upload hover:cursor-pointer">
