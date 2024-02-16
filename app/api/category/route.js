@@ -3,7 +3,7 @@ import { Category } from "@/lib/models/Category";
 
 export async function GET() {
     await connectDB();
-        const products = await Category.find().populate("parent");
+        const products = await Category.find().populate("parent").sort({ parent: 1 });
         return Response.json(products);
 }
 

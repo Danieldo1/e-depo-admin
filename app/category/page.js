@@ -8,6 +8,7 @@ const CategoryPage = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parent, setParent] = useState("");
+  const [editing, setEditing] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -24,24 +25,51 @@ const CategoryPage = () => {
 
   const saveCategory = async (e) => {
     e.preventDefault();
-    await fetch("/api/category", {
-      method: "POST",
-      body: JSON.stringify({ name, parent }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      response.json().then((data) => {
-        console.log(data);
-      });
-    });
+    if (editing) {
+        
+        await fetch(`/api/category`, {
+          method: "PUT",
+          body: JSON.stringify({ _id: editing._id, name, parent }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          response.json().then((data) => {
+            console.log(data);
+            setEditing(null);
+            fetchCategories();
+            setName("");
+            setParent("");
+          });
+        });
+        
+    } else {
+
+        await fetch("/api/category", {
+          method: "POST",
+          body: JSON.stringify({ name, parent }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          response.json().then((data) => {
+            console.log(data);
+          });
+        });
+    }
     setName("");
     fetchCategories();
   };
+
+  const editCategory = async (category) => {
+    setEditing(category);
+        setName(category.name);
+        setParent(category.parent?._id || category);
+  }
   return (
     <Layout>
       <h1 className="heading">Category Page</h1>
-      <label htmlFor="">Create Category</label>
+      <label htmlFor="" className="flex flex-row mb-2">{editing ? "Edit" : "Create"} Category {editing ? (<p className="font-bold text-base ml-3">{editing.name}</p>) : ""}</label>
       <form onSubmit={saveCategory} className="flex gap-2">
         <input
           value={name}
@@ -59,24 +87,24 @@ const CategoryPage = () => {
             Main Category
           </option>
           {categories.length > 0 &&
-            categories.map((category) => (
+            categories.filter((category) => !category.parent).map((category) => (
               <option key={category._id} value={category._id}>
                 {category.name}
               </option>
             ))}
         </select>
         <button className="btn-save py-1" type="submit">
-          Add
+          {editing ? "Update" : "Save"}
         </button>
       </form>
       <div className="">
         <h3 className="heading mt-10">Current Categories</h3>
         {categories.length > 0 &&
           categories.map((category) => (
-            <Link
-              href={`/category/edit/${category._id}`}
+            <div
+             onClick={() => editCategory(category)}
               key={category._id}
-              className=""
+              className="cursor-pointer"
             >
               <div className="flex my-2 gap-4 p-2 bg-blue-50 hover:bg-blue-100 justify-between items-center rounded-md">
                 <div>
@@ -92,7 +120,7 @@ const CategoryPage = () => {
                   </Link>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
       </div>
     </Layout>
