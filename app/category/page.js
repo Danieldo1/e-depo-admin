@@ -146,20 +146,27 @@ function CategoryPage({ swal }) {
             type="text"
             placeholder="Create Category"
           />
-         
-          <select value={parent} onChange={(e) => setParent(e.target.value)}>
-            <option value="" className="border-b border-gray-300">
-              Main Category
-            </option>
-            {categories.length > 0 &&
-              categories
-                .filter((category) => !category.parent)
-                .map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-          </select>
+          <div className="select mb-0">
+            <select
+              value={parent}
+              onChange={(e) => setParent(e.target.value)}
+              className="mb-0"
+            >
+              <option value="" className="border-b border-gray-300">
+                Main Category
+              </option>
+              {categories.length > 0 &&
+                categories
+                  .filter((category) => !category.parent)
+                  .map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+            </select>
+
+            <div className="select_arrow"></div>
+          </div>
         </div>
         <div className="mb-5 ">
           <label>Sub Property</label>
@@ -171,7 +178,9 @@ function CategoryPage({ swal }) {
             Add new sub property
           </button>
           {properties.length > 0 && (
-            <label className="text-red-500 text-center flex justify-end">Please add values with a comma (1 kg,2 kg,3 kg)</label>
+            <label className="text-red-500 text-center flex justify-end">
+              Please add values with a comma (1 kg,2 kg,3 kg)
+            </label>
           )}
           {properties.length > 0 &&
             properties.map((property, index) => (
@@ -249,10 +258,10 @@ function CategoryPage({ swal }) {
                 key={category._id}
                 className="cursor-pointer"
               >
-                <div className="flex my-2 gap-4 p-2 bg-blue-50 hover:bg-blue-100 justify-between items-center rounded-md">
+                <div className="flex my-2 gap-4 p-2 bg-gray-50 hover:bg-gray-100 justify-between items-center rounded-md">
                   <div>
                     <h1 className="text-xl font-bold">{category.name}</h1>
-                    <p className="text-sm px-1 bg-blue-500 text-white rounded-full font-bold text-center">
+                    <p className="text-sm px-1 bg-sky-500 text-white rounded-full font-bold text-center">
                       {category?.parent?.name}
                     </p>
                   </div>

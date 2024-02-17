@@ -11,20 +11,22 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
-const Navbar = () => {
+const Navbar = ({ showMenu }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = async () => {
-   await router.push('/')
-   await signOut();
-  }
-
   const inactiveLink =
-    " hover:bg-blue-500 hover:text-white rounded-md p-2 flex gap-2";
-  const activeLink = " bg-blue-500 text-white rounded-md p-2 flex gap-2";
+    " hover:bg-stone-500 hover:text-black rounded-md p-2 flex gap-2";
+  const activeLink = " bg-stone-500 text-black rounded-md p-2 flex gap-2";
+  
   return (
-    <aside className="flex flex-col p-5 text-white">
+    <aside
+      className={
+        (showMenu === true
+          ? "fixed bg-stone-900 h-full z-50 w-[60%]  "
+          : "hidden") + " md:flex flex-col p-5 text-white transition-all duration-300 ease-in-out  "
+      }
+    >
       <Link href="/" className="flex gap-2 mb-4">
         LOGO
       </Link>
@@ -70,8 +72,9 @@ const Navbar = () => {
       </nav>
       <div className="w-full flex  ">
         <button
-        onClick={()=>signOut({callbackUrl: process.env.NEXTAUTH_URL})}
-        className="mt-10 bg-red-500 w-full text-white p-2 rounded-lg items-center flex gap-2 hover:bg-red-600">
+          onClick={() => signOut({ callbackUrl: process.env.NEXTAUTH_URL })}
+          className="mt-10 bg-red-500 w-full text-white p-2 rounded-lg items-center flex gap-2 hover:bg-red-600"
+        >
           <LogOut />
           Logout
         </button>

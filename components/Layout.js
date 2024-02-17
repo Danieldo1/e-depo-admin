@@ -2,9 +2,14 @@
 
 import Navbar from "@/components/Navbar";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { Menu } from "lucide-react";
+import {useState} from "react"
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
+  const [showMenu, setShowMenu] = useState(false);
+
+
 
   if (!session) {
     return (
@@ -32,9 +37,25 @@ export default function Layout({ children }) {
   }
 
   return (
-    <main className="bg-blue-900 min-h-screen w-screen flex ">
-      <Navbar />
-      <div className="bg-white p-5 md:p-10 lg:p-12 xl:p-14 w-full flex-grow rounded-md max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-full mx-auto">{children}</div>
+    <main className="bg-stone-900 min-h-screen w-screen flex py-2 ">
+      <Navbar showMenu={showMenu} />
+      <button
+        onClick={() => setShowMenu(!showMenu)}
+        className={
+          (showMenu === true ? "hidden" : "fixed") + " top-3 left-2 md:hidden"
+        }
+      >
+        <Menu className="w-8 h-8 text-blue-500 text-2xl" />
+      </button>
+      <div
+        className={
+          "bg-gray-300 p-10 md:p-12 lg:p-14 xl:p-18 w-full flex-grow rounded-md max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-full mx-auto" +
+          (showMenu === true ? "bg-black opacity-60" : "")
+        }
+        onClick={() => setShowMenu(false)}
+      >
+        {children}
+      </div>
     </main>
   );
 }
