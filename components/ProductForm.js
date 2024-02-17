@@ -87,19 +87,20 @@ const ProductForm = ({
       <label>Product Photos</label>
       <div className="my-3 flex flex-wrap gap-2">
         <ReactSortable list={images} setList={setImages}  className="flex flex-wrap gap-2">
-        {!!images.length  ?(
+        {images.length < 0  ? (
+          <div
+          className="btn-upload rounded-md">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+        </div>
+         
+         
+        ):(
           images.map((link, index) => (
             <div key={link} className="relative group w-28 h-28 cursor-move rounded-md border">
             <img src={link} alt="Product Image" className="object-cover w-full h-full rounded-md" />
             <button onClick={() => handleDeleteImage(index)} className="hidden group-hover:block absolute top-0 left-0 p-2 bg-red-500 text-white rounded-full"><Trash2 /></button>
           </div>
           ))
-        ):(
-          <div
-          className="btn-upload rounded-md">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-        </div>
-         
         )
         }
         </ReactSortable>

@@ -82,6 +82,7 @@ function CategoryPage({ swal }) {
       });
     });
   }
+
   return (
     <Layout>
       <h1 className="heading">Category Page</h1>
