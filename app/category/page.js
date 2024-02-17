@@ -87,6 +87,7 @@ function CategoryPage({ swal }) {
         setEditing(null);
         setName("");
         setParent("");
+        setProperties([]);
         fetchCategories();
       });
     });

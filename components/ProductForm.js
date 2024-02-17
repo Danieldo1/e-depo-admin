@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, PencilLine, UploadCloud,Loader2,Trash2 } from "lucide-react";
+import { Plus, PencilLine, UploadCloud, Loader2, Trash2 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { ReactSortable } from "react-sortablejs";
 
@@ -12,6 +12,7 @@ const ProductForm = ({
   price: currentPrice,
   images: currentPhotos,
   category: currentCategory,
+  properties: currentProperties,
 }) => {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
@@ -19,6 +20,7 @@ const ProductForm = ({
   const [images, setImages] = useState(currentPhotos || []);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(currentCategory || "");
+  const [prodProperties, setProdProperties] = useState( currentProperties || {});
   const [redirect, setRedirect] = useState(false);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
@@ -26,7 +28,7 @@ const ProductForm = ({
 
   useEffect(() => {
     fetchCategory();
-  },[])
+  }, []);
 
   const fetchCategory = async () => {
     await fetch("/api/category").then((response) => {
@@ -34,11 +36,11 @@ const ProductForm = ({
         setCategories(data);
       });
     });
-  }
+  };
 
   const createNewProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images,category };
+    const data = { title, description, price, images, category, properties: prodProperties };
     if (_id) {
       await fetch(`/api/products`, {
         method: "PUT",
@@ -81,8 +83,8 @@ const ProductForm = ({
         return [...prev, ...link];
       });
       setUploading(false);
-    };
-  }
+    }
+  };
 
   const handleDeleteImage = (index) => {
     // Create a copy of the current images array
@@ -93,6 +95,26 @@ const ProductForm = ({
     setImages(updatedImages);
   };
 
+  const changeProductProperty =(propName,value) => {
+    setProdProperties((prev) => {
+      return { ...prev, [propName]: value };
+    });
+  }
+
+  const propertiesTaAdd = [];
+
+  if (categories.length > 0 && category) {
+    let selectedCategory = categories.find(({ _id }) => _id === category);
+    propertiesTaAdd.push(...selectedCategory?.properties);
+    while (selectedCategory?.parent?._id) {
+      const parent = categories.find(
+        ({ _id }) => _id === selectedCategory?.parent?._id
+      );
+      propertiesTaAdd.push(...parent.properties);
+      selectedCategory = parent;
+    }
+  }
+
   return (
     <form
       onSubmit={(e) => {
@@ -101,23 +123,35 @@ const ProductForm = ({
     >
       <label>Product Photos</label>
       <div className="my-3 flex flex-wrap gap-2">
-        <ReactSortable list={images} setList={setImages}  className="flex flex-wrap gap-2">
-        {images.length < 0  ? (
-          <div
-          className="btn-upload rounded-md">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
-        </div>
-         
-         
-        ):(
-          images.map((link, index) => (
-            <div key={link} className="relative group w-28 h-28 cursor-move rounded-md border">
-            <img src={link} alt="Product Image" className="object-cover w-full h-full rounded-md" />
-            <button onClick={() => handleDeleteImage(index)} className="hidden group-hover:block absolute top-0 left-0 p-2 bg-red-500 text-white rounded-full"><Trash2 /></button>
-          </div>
-          ))
-        )
-        }
+        <ReactSortable
+          list={images}
+          setList={setImages}
+          className="flex flex-wrap gap-2"
+        >
+          {images.length < 0 ? (
+            <div className="btn-upload rounded-md">
+              <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+            </div>
+          ) : (
+            images.map((link, index) => (
+              <div
+                key={link}
+                className="relative group w-28 h-28 cursor-move rounded-md border"
+              >
+                <img
+                  src={link}
+                  alt="Product Image"
+                  className="object-cover w-full h-full rounded-md"
+                />
+                <button
+                  onClick={() => handleDeleteImage(index)}
+                  className="hidden group-hover:block absolute top-0 left-0 p-2 bg-red-500 text-white rounded-full"
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            ))
+          )}
         </ReactSortable>
 
         {/* {!productImages?.length && <p className="">Add product images</p>} */}
@@ -135,16 +169,45 @@ const ProductForm = ({
         onChange={(e) => setTitle(e.target.value)}
       />
       <label>Product Category</label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} >
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Uncategorized</option>
-        {categories.length > 0 && categories
-        .filter((category) => !category.parent)
-        .map((category) => (
-          <option key={category._id} value={category._id}>
-            {category.name}
-          </option>
-        ))}
+        {categories.length > 0 &&
+          categories
+            .filter((category) => !category.parent)
+            .map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
       </select>
+      <div className="my-2 flex flex-col w-full">
+        {propertiesTaAdd.length > 0 &&
+          propertiesTaAdd.map((property) => (
+            <div
+              key={property.name}
+              className="mb-2 flex gap-2  items-center justify-end"
+            >
+              <div htmlFor="" className="w-[70%]">
+                {property.name}:
+              </div>
+              <div className="w-full flex justify-end">
+                <select
+                  className="mb-0"
+                  value={prodProperties[property.name]}
+                  onChange={(e) => {
+                    changeProductProperty(property.name, e.target.value);
+                  }}
+                >
+                  {property?.value?.map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
+      </div>
       <label htmlFor="">Product Description</label>
       <textarea
         type="text"
