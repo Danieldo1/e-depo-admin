@@ -146,11 +146,10 @@ function CategoryPage({ swal }) {
             type="text"
             placeholder="Create Category"
           />
-          <div className="select mb-0">
             <select
               value={parent}
               onChange={(e) => setParent(e.target.value)}
-              className="mb-0"
+              className=""
             >
               <option value="" className="border-b border-gray-300">
                 Main Category
@@ -164,9 +163,6 @@ function CategoryPage({ swal }) {
                     </option>
                   ))}
             </select>
-
-            <div className="select_arrow"></div>
-          </div>
         </div>
         <div className="mb-5 ">
           <label>Sub Property</label>

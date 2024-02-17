@@ -120,6 +120,7 @@ const ProductForm = ({
       onSubmit={(e) => {
         createNewProduct(e);
       }}
+      className="max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto bg-slate-100 shadow-md shadow-slate-400 p-10 rounded-md"
     >
       <label>Product Photos</label>
       <div className="my-3 flex flex-wrap gap-2">
@@ -169,7 +170,11 @@ const ProductForm = ({
         onChange={(e) => setTitle(e.target.value)}
       />
       <label>Product Category</label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        className=""
+      >
         <option value="">Uncategorized</option>
         {categories.length > 0 &&
           categories
@@ -187,7 +192,7 @@ const ProductForm = ({
               key={property.name}
               className="mb-2 flex gap-2  items-center justify-end"
             >
-              <div htmlFor="" className="w-[70%]">
+              <div htmlFor="" className="w-[70%] uppercase">
                 {property.name}:
               </div>
               <div className="w-full flex justify-end">

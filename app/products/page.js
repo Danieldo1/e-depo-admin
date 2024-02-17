@@ -24,7 +24,7 @@ const ProductsPage = () => {
       <div className=" ">
         <Link
           href="/products/new"
-          className="flex rounded-md bg-blue-500 text-white items-center justify-center gap-2 p-4 hover:bg-blue-600"
+          className="flex rounded-md bg-blue-500 text-white items-center justify-center gap-2 p-4 hover:bg-blue-600 max-w-3xl mx-auto"
         >
           <PackagePlus className="w-6 h-6 " />
           <h1 className="text-md font-bold ">Add Product</h1>
