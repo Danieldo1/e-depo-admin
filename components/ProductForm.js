@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, PencilLine, UploadCloud,Loader2,Trash2 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { ReactSortable } from "react-sortablejs";
@@ -11,19 +11,34 @@ const ProductForm = ({
   description: currentDescription,
   price: currentPrice,
   images: currentPhotos,
+  category: currentCategory,
 }) => {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
   const [images, setImages] = useState(currentPhotos || []);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(currentCategory || "");
   const [redirect, setRedirect] = useState(false);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    fetchCategory();
+  },[])
+
+  const fetchCategory = async () => {
+    await fetch("/api/category").then((response) => {
+      response.json().then((data) => {
+        setCategories(data);
+      });
+    });
+  }
+
   const createNewProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images,category };
     if (_id) {
       await fetch(`/api/products`, {
         method: "PUT",
@@ -119,6 +134,17 @@ const ProductForm = ({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <label>Product Category</label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)} >
+        <option value="">Uncategorized</option>
+        {categories.length > 0 && categories
+        .filter((category) => !category.parent)
+        .map((category) => (
+          <option key={category._id} value={category._id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
       <label htmlFor="">Product Description</label>
       <textarea
         type="text"
