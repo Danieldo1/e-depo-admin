@@ -30,7 +30,15 @@ function CategoryPage({ swal }) {
     if (editing) {
       await fetch(`/api/category`, {
         method: "PUT",
-        body: JSON.stringify({ _id: editing._id, name, parent, properties: properties.map((p) => ({ name: p.name, value: p.value.split(",") })) }),
+        body: JSON.stringify({
+          _id: editing._id,
+          name,
+          parent,
+          properties: properties.map((p) => ({
+            name: p.name,
+            value: p.value.split(","),
+          })),
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,7 +55,14 @@ function CategoryPage({ swal }) {
     } else {
       await fetch("/api/category", {
         method: "POST",
-        body: JSON.stringify({ name, parent, properties: properties.map((p) => ({ name: p.name, value: p.value.split(",") })) }),
+        body: JSON.stringify({
+          name,
+          parent,
+          properties: properties.map((p) => ({
+            name: p.name,
+            value: p.value.split(","),
+          })),
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,7 +74,6 @@ function CategoryPage({ swal }) {
           setParent("");
           setProperties([]);
           setEditing(null);
-
         });
       });
     }
@@ -71,7 +85,12 @@ function CategoryPage({ swal }) {
     setEditing(category);
     setName(category.name);
     setParent(category.parent?._id || category);
-    setProperties(category.properties.map((p) => ({ name: p.name, value: p.value.join(",") })));
+    setProperties(
+      category.properties.map((p) => ({
+        name: p.name,
+        value: p.value.join(","),
+      }))
+    );
   };
 
   const deleteCategory = async (category) => {
@@ -110,14 +129,15 @@ function CategoryPage({ swal }) {
   return (
     <Layout>
       <h1 className="heading">Category Page</h1>
-      <label htmlFor="" className="flex flex-row mb-2">
+      <label htmlFor="" className="flex flex-row -mb-5">
         {editing ? "Edit" : "Create"} Category{" "}
         {editing ? (
-          <p className="font-bold text-base ml-3">{editing.name}</p>
+          <p className="font-bold text-base ml-2">{editing.name}</p>
         ) : (
           ""
         )}
       </label>
+      <label className="flex flex-row mb-2 justify-end">Category Type</label>
       <form onSubmit={saveCategory}>
         <div className="flex gap-2">
           <input
@@ -126,6 +146,7 @@ function CategoryPage({ swal }) {
             type="text"
             placeholder="Create Category"
           />
+         
           <select value={parent} onChange={(e) => setParent(e.target.value)}>
             <option value="" className="border-b border-gray-300">
               Main Category
@@ -149,38 +170,48 @@ function CategoryPage({ swal }) {
           >
             Add new sub property
           </button>
+          {properties.length > 0 && (
+            <label className="text-red-500 text-center flex justify-end">Please add values with a comma (1 kg,2 kg,3 kg)</label>
+          )}
           {properties.length > 0 &&
             properties.map((property, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center gap-2 mt-2"
+                className="flex  items-center justify-center gap-2 mt-2"
               >
-                <input
-                  type="text"
-                  value={property.name}
-                  onChange={(e) =>
-                    setProperties((prev) => {
-                      prev[index].name = e.target.value;
-                      return [...prev];
-                    })
-                  }
-                  placeholder="Property Name"
-                />
-                <input
-                  type="text"
-                  value={property.value}
-                  onChange={(e) =>
-                    setProperties((prev) => {
-                      prev[index].value = e.target.value;
-                      return [...prev];
-                    })
-                  }
-                  placeholder="Property Value"
-                />
+                <div className="flex flex-col">
+                  <label className="mb-1">Name</label>
+                  <input
+                    type="text"
+                    value={property.name}
+                    onChange={(e) =>
+                      setProperties((prev) => {
+                        prev[index].name = e.target.value;
+                        return [...prev];
+                      })
+                    }
+                    placeholder="Property Name"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-1">Values</label>
+
+                  <input
+                    type="text"
+                    value={property.value}
+                    onChange={(e) =>
+                      setProperties((prev) => {
+                        prev[index].value = e.target.value;
+                        return [...prev];
+                      })
+                    }
+                    placeholder="Property Value"
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={() => deleteProperty(index)}
-                  className="p-2 -mt-2 rounded-full bg-red-500 hover:bg-red-600 text-white"
+                  className="p-2 mt-2 rounded-full bg-red-500 hover:bg-red-600 text-white"
                 >
                   <Trash2 />
                 </button>
@@ -195,7 +226,12 @@ function CategoryPage({ swal }) {
         </button>
         {editing && (
           <button
-            onClick={() => {setEditing(null); setName(""); setParent(""); setProperties([])}}
+            onClick={() => {
+              setEditing(null);
+              setName("");
+              setParent("");
+              setProperties([]);
+            }}
             className="btn-back py-1 mt-2 w-full text-center text-lg font-bold flex justify-center items-center"
             type="button"
           >
@@ -240,14 +276,14 @@ function CategoryPage({ swal }) {
                                 "Deleted!",
                                 "Your category has been deleted.",
                                 "success"
-                              )
+                              );
                             } else {
                               swal.fire(
                                 "Cancelled",
                                 "Your category is safe :)",
                                 "success"
                               );
-                              setEditing(null)
+                              setEditing(null);
                               setName("");
                               setParent("");
                               setProperties([]);

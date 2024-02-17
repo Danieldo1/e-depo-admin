@@ -1,7 +1,9 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import uniqid from "uniqid";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function POST(req) {
+  await isAdmin();
   const data = await req.formData();
   if (data.get("file")) {
     const file = data.get("file");

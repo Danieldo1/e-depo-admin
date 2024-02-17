@@ -34,7 +34,7 @@ export default function Layout({ children }) {
   return (
     <main className="bg-blue-900 min-h-screen w-screen flex ">
       <Navbar />
-      <h2 className="bg-white p-5 flex-grow rounded-md">{children}</h2>
+      <div className="bg-white p-5 md:p-10 lg:p-12 xl:p-14 w-full flex-grow rounded-md max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-full mx-auto">{children}</div>
     </main>
   );
 }

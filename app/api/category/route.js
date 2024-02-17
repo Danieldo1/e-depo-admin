@@ -1,8 +1,12 @@
 import { connectDB } from "@/lib/connectDB";
 import { Category } from "@/lib/models/Category";
+import { getServerSession } from "next-auth";
+
 
 export async function GET() {
   await connectDB();
+
+
   const products = await Category.find().populate("parent").sort({ parent: 1 });
   return Response.json(products);
 }

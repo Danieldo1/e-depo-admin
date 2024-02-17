@@ -2,10 +2,11 @@
 
 import Layout from "@/components/Layout";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const {data: session} = useSession();
-  if(!session) return null;
+  
   return (
 <Layout>
   <div className="text-blue-900 flex justify-between items-center">
