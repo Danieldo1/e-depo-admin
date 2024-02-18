@@ -1,10 +1,11 @@
-import Nav from "@/components/shop/Nav";
+import Hero from "@/components/shop/Hero";
 import React from "react";
+
 
 const ShopsPage = () => {
   return (
-    <main className="bg-blue-200  ">
-      
+    <main className="bg-[#fafafa] p-5 ">
+      <Hero />
     </main>
   );
 };
