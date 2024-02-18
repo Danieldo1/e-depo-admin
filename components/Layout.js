@@ -49,8 +49,8 @@ export default function Layout({ children }) {
       </button>
       <div
         className={
-          "bg-gray-300 p-10 md:p-12 lg:p-14 xl:p-18 w-full flex-grow rounded-md max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-full mx-auto" +
-          (showMenu === true ? "bg-black opacity-60" : "")
+          "bg-gray-300 p-10 md:p-12 lg:p-14 xl:p-18 w-full flex-grow rounded-md max-w-3xl md:max-w-4xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-full mx-auto" +
+          (showMenu === true ? "bg-black opacity-60 blur-md" : "")
         }
         onClick={() => setShowMenu(false)}
       >

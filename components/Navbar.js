@@ -32,7 +32,7 @@ const Navbar = ({ showMenu }) => {
       </Link>
 
       <nav className="flex gap-2 flex-col ">
-        <Link href="/" className={pathname === "/" ? activeLink : inactiveLink}>
+        <Link href="/admin" className={pathname === "/" ? activeLink : inactiveLink}>
           {" "}
           <LayoutDashboard />
           Dashboard
