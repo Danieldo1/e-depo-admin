@@ -31,7 +31,7 @@ const CartPage = () => {
  };
   return (
     <>
-      <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1">Checkout</h1>
+      <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 ">Checkout</h1>
       <div className="grid grid-cols-[1.2fr_.8fr]  md:gap-10 lg:gap-40   w-full h-full bg-[#b8b7b7]">
         <div className="bg-[#f5f5f5] rounded-bl-lg md:rounded-b-lg h-3/4">
           <div className="p-5 flex flex-col justify-around h-full">
@@ -104,13 +104,13 @@ const CartPage = () => {
                 placeholder="Address"
               />
             </div>
-            <div className="flex items-center justify-around -mt-5 md:mt-0 h-full">
+            <div className="flex items-center  -mt-5 md:mt-0 h-full">
               <input
                 type="checkbox"
                 id="termsAndConditions"
-                className="mr-2 md:mr-0 md:mb-0 h-5 w-5"
+                className="mr-2 md:mr-0 md:mb-0 h-5 w-5 cursor-pointer"
               />
-              <label htmlFor="termsAndConditions" className="text-sm md:mb-1">
+              <label htmlFor="termsAndConditions" className="text-sm md:mb-1 ml-3">
                 Agree to{" "}
                 <a href="/terms" className="text-blue-500">
                   Terms and Conditions

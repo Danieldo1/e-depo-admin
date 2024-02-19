@@ -155,12 +155,7 @@ const editCategory = async (category) => {
 }
 
  const handleDeleteImage = (index) => {
-   // Create a copy of the current images array
-   const updatedImages = [...images];
-   // Remove the image at the specified index
-   updatedImages.splice(index, 1);
-   // Update the state with the modified array (removing the deleted image)
-   setImages(updatedImages);
+   setImages([...images.slice(0, index), ...images.slice(index + 1)]);
  };
 
 
@@ -168,18 +163,18 @@ const editCategory = async (category) => {
     <Layout>
       <h1 className="heading">Category Page</h1>
       <div className="flex flex-row mb-5">
-        {uploading === true && (
+        {uploading === true ? (
           <div className="btn-upload rounded-md">
             <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
           </div>
-        )}
+        ): null}
         {images.length > 0 ? (
           <div className="flex flex-col gap-2 relative group">
             <label>Category Image</label>
 
             <img
-              src={images}
-              alt=""
+              src={images || '/no-image.svg'}
+              alt="Image added to category"
               className="w-48 h-48 object-cover rounded-md"
             />
             <button
