@@ -112,9 +112,9 @@ const CartPage = () => {
               />
               <label htmlFor="termsAndConditions" className="text-sm md:mb-1 ml-3">
                 Agree to{" "}
-                <a href="/terms" className="text-blue-500">
+                <Link href="/terms" className="text-blue-500">
                   Terms and Conditions
-                </a>
+                </Link>
               </label>
             </div>
 
