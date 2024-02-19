@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="grid md:grid-cols-2 gap-5 w-full h-full relative">
+    <div className="grid md:grid-cols-2 gap-5 w-full h-[70vh] relative">
       <div className="md:hidden  absolute flex flex-col  z-10 h-full">
         <div className="bg-gradient-to-t from-[#fafafa] to-transparent w-full h-full flex justify-between flex-col">
           <h2 className="text-5xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
@@ -14,12 +14,12 @@ const Hero = () => {
             toys to grooming and accessories, we have everything you need to
             keep your furry friend happy and healthy. Visit us today and see why
             we're the best pet store in town!
-          </p>
-          <div className="flex gap-4 mt-5 justify-start">
             <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600">
               Shop All
             </button>
-          </div>
+          </p>
+          <div className="flex gap-4 mt-5 justify-start">
+          </div> 
         </div>
       </div>
 
