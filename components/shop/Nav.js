@@ -1,19 +1,27 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CartContext } from "@/components/shop/CartWrapper";
-
+import CartToggle from "@/components/shop/CartToggle";
+import { ShoppingCart, UserRound } from "lucide-react";
 
 const Nav = () => {
   const pathname = usePathname();
-  const {cart} = useContext(CartContext)
+  const [showCart, setShowCart] = useState(false);
+  const { cart } = useContext(CartContext);
 
   const inactiveLink =
     "hover:text-slate-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2";
   const activeLink =
     "text-slate-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out";
+
+  if (!!showCart) {
+    return (
+      <CartToggle showCart={showCart} setShowCart={setShowCart} cart={cart} />
+    );
+  }
 
   return (
     <header className=" p-4 w-full  bg-[#206ef6]">
@@ -26,26 +34,32 @@ const Nav = () => {
             href="/shop"
             className={pathname === "/shop" ? activeLink : inactiveLink}
           >
-            Shop
+            Shop <span className="hidden lg:block">All</span>
           </Link>
           <Link
             href="/categories"
             className={pathname === "/categories" ? activeLink : inactiveLink}
           >
-            Categories
+            <span className="hidden lg:block">All</span> Categories
           </Link>
           <Link
             href="/account"
             className={pathname === "/account" ? activeLink : inactiveLink}
           >
-            Account
+            <span className="hidden md:block">Account</span>
+            <UserRound />
           </Link>
-          <Link
-            href="/cart"
-            className={pathname === "/cart" ? activeLink : inactiveLink}
+          {/* <CartToggle showCart={showCart} setShowCart={setShowCart} cart={cart} /> */}
+          <button
+            onClick={() => setShowCart(true)}
+            className="relative flex flex-row justify-center items-center"
           >
-            Cart ({cart.length || 0})
-          </Link>
+            <span className="text-white hidden md:block">Cart</span>{" "}
+            <ShoppingCart className="z-50" />{" "}
+            <span className="bg-white  text-[#206ef6] px-1.5 rounded-full absolute top-0 -right-2 z-40 text-sm font-semibold">
+              {cart.length}
+            </span>
+          </button>
         </nav>
       </div>
     </header>

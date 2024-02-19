@@ -29,18 +29,22 @@ function CategoryPage({ swal }) {
 
   const saveCategory = async (e) => {
     e.preventDefault();
+    const payload = {
+      name,
+      parent: parent || undefined, // Use existing parent if parent state hasn't changed
+      properties: properties.map((p) => ({
+        name: p.name,
+        value: p.value.split(","),
+      })),
+      // Use the first image if it exists, otherwise keep the existing image
+      image: images.length > 0 ? images[0] : editing?.image || undefined,
+    };
     if (editing) {
       await fetch(`/api/category`, {
         method: "PUT",
         body: JSON.stringify({
           _id: editing._id,
-          name,
-          parent,
-          properties: properties.map((p) => ({
-            name: p.name,
-            value: p.value.split(","),
-          })),
-          image: images[0],
+          ...payload,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -60,13 +64,7 @@ function CategoryPage({ swal }) {
       await fetch("/api/category", {
         method: "POST",
         body: JSON.stringify({
-          name,
-          parent,
-          properties: properties.map((p) => ({
-            name: p.name,
-            value: p.value.split(","),
-          })),
-          image: images[0],
+          ...payload,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -87,19 +85,20 @@ function CategoryPage({ swal }) {
     fetchCategories();
   };
 
-  const editCategory = async (category) => {
-    setEditing(category);
-    setName(category.name);
-    setParent(category.parent?._id || category);
-    setProperties(
-      category.properties.map((p) => ({
-        name: p.name,
-        value: p.value.join(","),
-      }))
-      
-    );
-    setImages(category.image || []);
-  };
+const editCategory = async (category) => {
+  setEditing(category);
+  setName(category.name);
+  setParent(category.parent ? category.parent._id : "");
+  setProperties(
+    category.properties.map((p) => ({
+      name: p.name,
+      // Ensure that the value is a comma-separated string
+      value: Array.isArray(p.value) ? p.value.join(",") : p.value,
+    }))
+  );
+  
+  setImages(category.image ? [category.image] : []);
+};
 
   const deleteCategory = async (category) => {
     await fetch(`/api/category`, {
@@ -227,7 +226,7 @@ function CategoryPage({ swal }) {
               categories
                 .filter((category) => !category.parent)
                 .map((category) => (
-                  <option key={category._id} value={category._id}>
+                  <option key={category._id} value={category._id || ""}>
                     {category.name}
                   </option>
                 ))}

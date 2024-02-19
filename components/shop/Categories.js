@@ -32,7 +32,7 @@ const Categories = ({ categories, loading }) => {
                   className="w-full h-full rounded-full object-cover "
                 />
               </div>
-              <p className="text-lg group-hover:scale-105 transition-all delay-100 duration-300 ease-in font-semibold text-gray-800 mt-2">
+              <p className="text-lg group-hover:scale-105 transition-all delay-100 duration-300 ease-in font-bold text-gray-800 mt-2 capitalize">
                 {category.name}
               </p>
             </Link>
