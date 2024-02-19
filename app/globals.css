@@ -37,3 +37,34 @@ label {
 .text1 {
     font-family: var(--font-protest);
 }
+
+.headingmain {
+    @apply text-5xl font-bold text-gray-800
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-pulse {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-pulse::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: loading 1.5s infinite;
+}

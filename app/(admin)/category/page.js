@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
+import { Trash2, UploadCloud,Loader2 } from "lucide-react";
 import { withSwal } from "react-sweetalert2";
 
 function CategoryPage({ swal }) {
@@ -11,6 +11,8 @@ function CategoryPage({ swal }) {
   const [parent, setParent] = useState("");
   const [editing, setEditing] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [images, setImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -38,6 +40,7 @@ function CategoryPage({ swal }) {
             name: p.name,
             value: p.value.split(","),
           })),
+          image: images[0],
         }),
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +53,7 @@ function CategoryPage({ swal }) {
           setName("");
           setParent("");
           setProperties([]);
+          setImages([]);
         });
       });
     } else {
@@ -62,6 +66,7 @@ function CategoryPage({ swal }) {
             name: p.name,
             value: p.value.split(","),
           })),
+          image: images[0],
         }),
         headers: {
           "Content-Type": "application/json",
@@ -73,6 +78,7 @@ function CategoryPage({ swal }) {
           setName("");
           setParent("");
           setProperties([]);
+          setImages([]);
           setEditing(null);
         });
       });
@@ -90,7 +96,9 @@ function CategoryPage({ swal }) {
         name: p.name,
         value: p.value.join(","),
       }))
+      
     );
+    setImages(category.image || []);
   };
 
   const deleteCategory = async (category) => {
@@ -102,11 +110,11 @@ function CategoryPage({ swal }) {
       },
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
         setEditing(null);
         setName("");
         setParent("");
         setProperties([]);
+        setImages([]);
         fetchCategories();
       });
     });
@@ -126,9 +134,70 @@ function CategoryPage({ swal }) {
     });
   };
 
+  const uploadPhotos = async (e) => {
+   const files = e.target.files;
+   if (files?.length > 0) {
+     setUploading(true);
+     const data = new FormData();
+     for (const file of files) {
+       data.append("file", file);
+     }
+     const res = await fetch("/api/upload", {
+       method: "POST",
+       body: data,
+     });
+
+     const link = await res.json();
+     setUploading(false);
+     setImages((prev) => {
+       return [...prev, ...link];
+     })
+   }
+}
+
+ const handleDeleteImage = (index) => {
+   // Create a copy of the current images array
+   const updatedImages = [...images];
+   // Remove the image at the specified index
+   updatedImages.splice(index, 1);
+   // Update the state with the modified array (removing the deleted image)
+   setImages(updatedImages);
+ };
+
+
   return (
     <Layout>
       <h1 className="heading">Category Page</h1>
+      <div className="flex flex-row mb-5">
+        {uploading === true && (
+          <div className="btn-upload rounded-md">
+            <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+          </div>
+        )}
+        {images.length > 0 ? (
+          <div className="flex flex-col gap-2 relative group">
+            <label>Category Image</label>
+
+            <img
+              src={images}
+              alt=""
+              className="w-48 h-48 object-cover rounded-md"
+            />
+            <button
+              onClick={() => handleDeleteImage(0)}
+              className="hidden group-hover:block absolute top-0 left-0 p-2 bg-red-500 text-white rounded-full"
+            >
+              <Trash2 />
+            </button>
+          </div>
+        ) : (
+          <label className="btn-upload hover:cursor-pointer">
+            <UploadCloud className="w-12 h-12 text-blue-500" />
+            <input type="file" className="hidden" onChange={uploadPhotos} />
+          </label>
+        )}
+      </div>
+
       <label htmlFor="" className="flex flex-row -mb-5">
         {editing ? "Edit" : "Create"} Category{" "}
         {editing ? (
@@ -146,23 +215,23 @@ function CategoryPage({ swal }) {
             type="text"
             placeholder="Create Category"
           />
-            <select
-              value={parent}
-              onChange={(e) => setParent(e.target.value)}
-              className=""
-            >
-              <option value="" className="border-b border-gray-300">
-                Main Category
-              </option>
-              {categories.length > 0 &&
-                categories
-                  .filter((category) => !category.parent)
-                  .map((category) => (
-                    <option key={category._id} value={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-            </select>
+          <select
+            value={parent}
+            onChange={(e) => setParent(e.target.value)}
+            className=""
+          >
+            <option value="" className="border-b border-gray-300">
+              Main Category
+            </option>
+            {categories.length > 0 &&
+              categories
+                .filter((category) => !category.parent)
+                .map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+          </select>
         </div>
         <div className="mb-5 ">
           <label>Sub Property</label>
@@ -236,6 +305,7 @@ function CategoryPage({ swal }) {
               setName("");
               setParent("");
               setProperties([]);
+              setImages([]);
             }}
             className="btn-back py-1 mt-2 w-full text-center text-lg font-bold flex justify-center items-center"
             type="button"

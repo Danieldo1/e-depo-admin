@@ -5,19 +5,18 @@ import { getServerSession } from "next-auth";
 
 export async function GET() {
   await connectDB();
-
-
   const products = await Category.find().populate("parent").sort({ parent: 1 });
   return Response.json(products);
 }
 
 export async function POST(req) {
   await connectDB();
-  const { name, parent,properties } = await req.json();
+  const { name, parent,properties,image } = await req.json();
   const newCategory = await Category.create({ 
     name,
     parent: parent || undefined,
-    properties
+    properties,
+    image
 
 });
   return Response.json(newCategory);
@@ -25,12 +24,13 @@ export async function POST(req) {
 
 export async function PUT(req) {
   await connectDB();
-  const { _id, name, parent,properties } = await req.json();
+  const { _id, name, parent,properties,image } = await req.json();
   const updatedCategory = await Category.findOneAndUpdate(
     { _id },
     { name,
          parent: parent || undefined,
-        properties
+        properties,
+        image
     }
   );
   return Response.json(updatedCategory);
