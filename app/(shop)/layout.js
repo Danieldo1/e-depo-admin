@@ -2,6 +2,7 @@ import { Montserrat, Kanit } from "next/font/google";
 import "../globals.css";
 import SessionWrapper from "../../components/SessionWrapper";
 import Nav from "@/components/shop/Nav";
+import CartWrapper from "@/components/shop/CartWrapper";
 
 const mont = Montserrat({ subsets: ["latin"] });
 const protest = Kanit({
@@ -18,6 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <SessionWrapper>
+      <CartWrapper>
       <html lang="en">
         <body
           className={`${mont.className} ${protest.variable}  bg-[#fafafa] w-screen h-[100vh] `}
@@ -28,6 +30,7 @@ export default function RootLayout({ children }) {
           {children}
         </body>
       </html>
+      </CartWrapper>
     </SessionWrapper>
   );
 }

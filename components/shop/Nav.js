@@ -1,11 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CartContext } from "@/components/shop/CartWrapper";
+
 
 const Nav = () => {
   const pathname = usePathname();
+  const {cart} = useContext(CartContext)
 
   const inactiveLink =
     "hover:text-slate-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2";
@@ -41,7 +44,7 @@ const Nav = () => {
             href="/cart"
             className={pathname === "/cart" ? activeLink : inactiveLink}
           >
-            Cart
+            Cart ({cart.length || 0})
           </Link>
         </nav>
       </div>

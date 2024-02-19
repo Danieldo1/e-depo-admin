@@ -23,7 +23,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="hidden md:flex md:flex-col justify-evenly -mr-40 pl-10 z-10  rounded-lg ">
+      <div className="hidden md:flex md:flex-col justify-evenly -mr-40  z-10  rounded-lg ">
         <div className="bg-gradient-to-r from-[#fafafa] via-[#fafafa] to-transparent w-full h-full">
           <h2 className="text-3xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
