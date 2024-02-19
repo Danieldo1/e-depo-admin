@@ -31,12 +31,12 @@ const Products = ({ products, loading }) => {
           </div>
         )}
         {products.map((product) => (
-          <Link
-            href={`/product/${product._id}`}
+          <div
+            
             key={product._id}
             className="min-w-[300px] cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
           >
-            <div className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] ">
+            <Link href={`/product/${product._id}`} className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] ">
               <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">
                 NEW
               </p>
@@ -63,8 +63,8 @@ const Products = ({ products, loading }) => {
                   Add to cart
                 </button>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         ))}
       </div>
     </div>
