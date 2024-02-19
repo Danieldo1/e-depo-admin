@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="grid md:grid-cols-2 gap-5 w-full h-[70vh] relative">
+    <div className="grid md:grid-cols-2 gap-5 w-full h-[60vh] md:h-[50vh] relative">
       <div className="md:hidden  absolute flex flex-col  z-10 h-full">
         <div className="bg-gradient-to-t from-[#fafafa] to-transparent w-full h-full flex justify-between flex-col">
           <h2 className="text-5xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
@@ -23,7 +23,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="hidden md:flex md:flex-col justify-evenly -mr-40  z-10  rounded-lg ">
+      <div className="hidden md:flex md:flex-col justify-evenly -mr-40  z-10  rounded-lg h-[50vh]">
         <div className="bg-gradient-to-r from-[#fafafa] via-[#fafafa] to-transparent w-full h-full">
           <h2 className="text-3xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
