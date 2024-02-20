@@ -42,6 +42,31 @@ const CartPage = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      firstName,
+      lastName,
+      phone,
+      email,
+      city,
+      zip,
+      address,
+      country,
+      products: cart,
+    };
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    const result = await response.json()
+    console.log(result)
+    }
+  
+
   const addQuantity = (id) => {
     useCart(id);
   };
@@ -58,7 +83,7 @@ const CartPage = () => {
   }
 
   return (
-    <main className=" flex flex-col">
+    <main className=" flex flex-col overflow-hidden">
       <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 mt-3">
         Checkout
       </h1>
@@ -126,93 +151,126 @@ const CartPage = () => {
             )}
           </div>
         </div>
+        {/* Form */}
         {cart?.length > 0 && (
+          <div className="bg-[#f5f5f5] rounded-br-lg md:rounded-b-lg h-3/4 ">
+            <div className="p-5 flex flex-col gap-5 h-full w-full">
+              <h3 className="text-xl font-bold">Contact Details</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  <label>Shipping Details</label>
+                  <div className="flex flex-col md:flex-row md:space-x-4">
+                    <input
+                      className="w-full p-2 border border-gray-300 rounded-md mb-4 md:mb-0"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      name="firstName"
+                    />
+                    <input
+                      className="w-full p-2 border border-gray-300 rounded-md mb-0"
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      name="lastName"
+                    />
+                  </div>
 
-        <div className="bg-[#f5f5f5] rounded-br-lg md:rounded-b-lg h-3/4 ">
-          <div className="p-5 flex flex-col gap-5 h-full w-full">
-            <h3 className="text-xl font-bold">Contact Details</h3>
-            {/* Form */}
-            <div className="space-y-4">
-              <label>Shipping Details</label>
-              <div className="flex flex-col md:flex-row md:space-x-4">
-                <input
-                  className="w-full p-2 border border-gray-300 rounded-md mb-4 md:mb-0"
-                  placeholder="First Name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <input
-                  className="w-full p-2 border border-gray-300 rounded-md mb-0"
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
+                  <input
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                  />
+                  <input
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    name="phone"
+                  />
 
-              <input
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+                  <div className="flex flex-col md:flex-row md:space-x-4">
+                    <input
+                      className="w-full p-2 border border-gray-300 rounded-md mb-4 md:mb-0"
+                      placeholder="City"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      name="city"
+                    />
+                    <input
+                      className="w-full p-2 border border-gray-300 rounded-md mb-0"
+                      placeholder="Zip Code"
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                      name="zip"
+                    />
+                  </div>
 
-              <div className="flex flex-col md:flex-row md:space-x-4">
-                <input
-                  className="w-full p-2 border border-gray-300 rounded-md mb-4 md:mb-0"
-                  placeholder="City"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-                <input
-                  className="w-full p-2 border border-gray-300 rounded-md mb-0"
-                  placeholder="Zip Code"
-                  value={zip}
-                  onChange={(e) => setZip(e.target.value)}
-                />
-              </div>
-
-              <input
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              <input
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="County"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-              <div className="flex items-center ">
-                <input
-                  type="checkbox"
-                  id="termsAndConditions"
-                  className="mt-0 md:mr-0 md:mb-0 h-5 w-5 cursor-pointer"
-                />
-                <label
-                  htmlFor="termsAndConditions"
-                  className="text-sm mb-1 ml-3"
-                >
-                  Agree to{" "}
-                  <Link href="/terms" className="text-blue-500">
-                    Terms and Conditions
-                  </Link>
-                </label>
-              </div>
+                  <input
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    name="address"
+                  />
+                  <input
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="County"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    name="country"
+                  />
+                  <input
+                    type="hidden"
+                    value={cart?.join(",")}
+                    name="products"
+                  />
+                  <div className="flex items-center ">
+                    <input
+                      type="checkbox"
+                      id="termsAndConditions"
+                      className="mt-0 md:mr-0 md:mb-0 h-5 w-5 cursor-pointer"
+                    />
+                    <label
+                      htmlFor="termsAndConditions"
+                      className="text-sm mb-1 ml-3"
+                    >
+                      Agree to{" "}
+                      <Link href="/terms" className="text-blue-500">
+                        Terms and Conditions
+                      </Link>
+                    </label>
+                  </div>
+                </div>
+                {!cart.length > 0 ? (
+                  <button
+                    className={
+                      "bg-gray-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-gray-600 cursor-not-allowed"
+                    }
+                    disabled
+                  >
+                    Payment <ArrowRightCircle />
+                  </button>
+                ) : (
+                  <button
+                    className={
+                      "bg-blue-500 relative z-50 mt-10 w-full justify-center text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
+                    }
+                    type="submit"
+                  >
+                    Payment <ArrowRightCircle />
+                  </button>
+                )}
+              </form>
             </div>
           </div>
-        </div>
         )}
       </div>
 
-      {/* Tatal */}
-      <div className="p-5 bg-[#f5f5f5] text-black z-10  fixed bottom-0 w-screen">
+      {/* Total */}
+      <div className="p-5 bg-[#f5f5f5] text-black z-10  fixed bottom-0 w-full overflow-hidden">
         <div className="flex justify-between items-center ">
           <div className="flex flex-col">
             <p>Total Items: {cart.length}</p>
@@ -220,27 +278,6 @@ const CartPage = () => {
             <p>Subtotal: ${subtotal}</p>
             <h2 className="text-xl font-bold">Total: ${subtotal + shipping}</h2>
           </div>
-          {/* <div className="text-lg font-bold">Subtotal: ${subtotal}</div> */}
-          {!cart.length > 0 ? (
-            <button
-              type="submit"
-              className={
-                "bg-gray-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-gray-600 cursor-not-allowed"
-              }
-              disabled
-            >
-              Payment <ArrowRightCircle />
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className={
-                "bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
-              }
-            >
-              Payment <ArrowRightCircle />
-            </button>
-          )}
         </div>
       </div>
     </main>
