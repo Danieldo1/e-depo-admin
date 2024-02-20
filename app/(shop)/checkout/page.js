@@ -38,19 +38,28 @@ const CartPage = () => {
   const removeQuantity = (id) => {
     removeProduct(id);
   };
+  const shipping = 15;
+  let subtotal = 0;
+
+  for (const item of cart) {
+    const price = cartItems.find((i) => i._id === item)?.price || 0;
+    subtotal += price;
+  }
 
   return (
-    <>
-      <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 ">Checkout</h1>
-      <div className="grid grid-cols-[1.2fr_.8fr]  md:gap-10 lg:gap-40   w-full h-full bg-[#b8b7b7]">
+    <main className=" flex flex-col">
+      <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 mt-3">Checkout</h1>
+      <div className="grid grid-cols-[1.2fr_1fr]  md:gap-10 lg:gap-40   w-full h-full bg-[#f5f5f5] absolute">
         <div className="bg-[#f5f5f5] rounded-bl-lg md:rounded-b-lg h-3/4">
-          <div className="p-5 flex flex-col gap-5 h-full overflow-scroll">
+          <div className="p-5 flex flex-col gap-5 h-full overflow-scroll ">
             <h3 className="text-xl font-bold">Cart Details</h3>
-            <div className="flex flex-row justify-between uppercase text-gray-500 text-sm ">
-              <label>Product</label>
-              <label className="ml-40">Quantity</label>
-              <label> Price</label>
-            </div>
+            {loading === false && cartItems.length > 0 && (
+              <div className="flex flex-row justify-between uppercase text-gray-500 text-sm border-b pb-4">
+                <label>Product</label>
+                <label className="ml-40">Quantity</label>
+                <label className="md:mr-5"> Price</label>
+              </div>
+            )}
             {!cart?.length && (
               <div className="flex flex-col justify-center items-center h-full mt-5">
                 <p className="text-gray-500">Cart is empty</p>
@@ -109,16 +118,18 @@ const CartPage = () => {
                       <div className="md:flex md:items-center md:space-x-4">
                         <button
                           onClick={() => removeQuantity(item._id)}
-                          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+                          className="bg-gray-200 px-2 py-2 rounded hover:bg-gray-300"
                         >
-                          <Minus />
+                          <Minus className="w-4 h-4" />
                         </button>
-                        <p className="text-center">{cart.filter((id) => id === item._id).length}</p>
+                        <p className="text-center">
+                          {cart.filter((id) => id === item._id).length}
+                        </p>
                         <button
                           onClick={() => addQuantity(item._id)}
-                          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+                          className="bg-gray-200 px-2 py-2  rounded hover:bg-gray-300"
                         >
-                          <Plus />
+                          <Plus className="w-4 h-4" />
                         </button>
                       </div>
                       <div>
@@ -135,12 +146,12 @@ const CartPage = () => {
             )}
           </div>
         </div>
-        <div className="bg-[#f5f5f5] rounded-br-lg md:rounded-b-lg h-3/4">
-          <div className="p-5 flex flex-col justify-around h-full">
-            <h3 className="text-xl font-bold">Order Summary</h3>
+        <div className="bg-[#f5f5f5] rounded-br-lg md:rounded-b-lg h-3/4 ">
+          <div className="p-5 flex flex-col gap-5 h-full w-full">
+            <h3 className="text-xl font-bold">Contact Details</h3>
 
             <div className="space-y-4">
-              <label>Your Details</label>
+              <label>Shipping Details</label>
               <div className="flex flex-col md:flex-row md:space-x-4">
                 <input
                   className="w-full p-2 border border-gray-300 rounded-md mb-4 md:mb-0"
@@ -176,48 +187,55 @@ const CartPage = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 placeholder="Address"
               />
+              <div className="flex items-center ">
+                <input
+                  type="checkbox"
+                  id="termsAndConditions"
+                  className="mt-0 md:mr-0 md:mb-0 h-5 w-5 cursor-pointer"
+                />
+                <label htmlFor="termsAndConditions" className="text-sm mb-1 ml-3">
+                  Agree to{" "}
+                  <Link href="/terms" className="text-blue-500">
+                    Terms and Conditions
+                  </Link>
+                </label>
+              </div>
             </div>
-            <div className="flex items-center  -mt-5 md:mt-0 h-full">
-              <input
-                type="checkbox"
-                id="termsAndConditions"
-                className="mr-2 md:mr-0 md:mb-0 h-5 w-5 cursor-pointer"
-              />
-              <label
-                htmlFor="termsAndConditions"
-                className="text-sm md:mb-1 ml-3"
-              >
-                Agree to{" "}
-                <Link href="/terms" className="text-blue-500">
-                  Terms and Conditions
-                </Link>
-              </label>
-            </div>
-
-            {!cart.length > 0 ? (
-              <button
-                type="submit"
-                className={
-                  "bg-gray-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 mt-4 hover:bg-gray-600 cursor-not-allowed"
-                }
-                disabled
-              >
-                Payment <ArrowRightCircle />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className={
-                  "bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 mt-4 hover:bg-blue-600"
-                }
-              >
-                Payment <ArrowRightCircle />
-              </button>
-            )}
           </div>
         </div>
       </div>
-    </>
+      <div className="p-5 bg-[#f5f5f5] text-black z-10  fixed bottom-0 w-screen">
+        <div className="flex justify-between items-center ">
+          <div className="flex flex-col">
+            <p>Total Items: {cart.length}</p>
+            <p>Shipping: ${shipping}</p>
+            <p>Subtotal: ${subtotal}</p>
+            <h2 className="text-xl font-bold">Total: ${subtotal + shipping}</h2>
+          </div>
+          {/* <div className="text-lg font-bold">Subtotal: ${subtotal}</div> */}
+          {!cart.length > 0 ? (
+            <button
+              type="submit"
+              className={
+                "bg-gray-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-gray-600 cursor-not-allowed"
+              }
+              disabled
+            >
+              Payment <ArrowRightCircle />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className={
+                "bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
+              }
+            >
+              Payment <ArrowRightCircle />
+            </button>
+          )}
+        </div>
+      </div>
+    </main>
   );
 };
 
