@@ -5,6 +5,8 @@ import Link from "next/link";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(10);
 
   useEffect(() => {
     fetchOrders();
@@ -17,11 +19,24 @@ const OrdersPage = () => {
       });
     });
   };
+
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
+    pageNumbers.push(i);
+  }
   return (
     <Layout>
       <h1 className="heading">Orders Page</h1>
       <div>
-        {orders.map((order) => {
+        {currentOrders.map((order) => {
           // Calculate the total price for the order
           const totalPrice = order.line_items.reduce((total, item) => {
             return total + item.price_data.unit_amount * item.quantity;
@@ -47,7 +62,13 @@ const OrdersPage = () => {
                 </p>
               </div>
               <div>
-                <p className={order.fulfilled ? "text-green-500" : "text-red-500"}>{order.fulfilled ? "Fulfilled" : "Not Fulfilled"}</p>
+                <p
+                  className={
+                    order.fulfilled ? "text-green-500" : "text-red-500"
+                  }
+                >
+                  {order.fulfilled ? "Fulfilled" : "Not Fulfilled"}
+                </p>
                 <p>
                   <span className="font-bold text-base">Total:</span> $
                   {totalPrice / 100}
@@ -57,6 +78,18 @@ const OrdersPage = () => {
             </Link>
           );
         })}
+      </div>
+      <div className="flex justify-center gap-5 mt-3 overflow-x-auto">
+        {pageNumbers.map((number) => (
+          <a
+            key={number}
+            href="#!"
+            className="font-bold hover:underline px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded-md"
+            onClick={() => paginate(number)}
+          >
+            {number}
+          </a>
+        ))}
       </div>
     </Layout>
   );
