@@ -5,9 +5,12 @@ import { ArrowRightCircle } from "lucide-react";
 import { CartContext } from "@/components/shop/CartWrapper";
 import Link from "next/link";
 import AllItems from "@/components/shop/AllItems";
+import { CountryDropdown } from "react-country-region-selector";
+import { z } from "zod";
 
 const CartPage = () => {
-  const { cart, setCart, useCart, removeProduct, clearCart } = useContext(CartContext);
+  const { cart, setCart, useCart, removeProduct, clearCart } =
+    useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -42,36 +45,83 @@ const CartPage = () => {
     }
   };
 
+  const formSchema = z.object({
+    firstName: z.string().min(1, { message: "First name is required" }),
+    lastName: z.string().min(1, { message: "Last name is required" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    phone: z
+      .string()
+      .min(6, { message: "Phone number must be at least 10 digits" }),
+    city: z.string().min(1, { message: "City is required" }),
+    zip: z.string().min(4, { message: "ZIP code must be at least 5 digits" }),
+    address: z.string().min(1, { message: "Address is required" }),
+    country: z.string().min(1, { message: "Country is required" }),
+    termsAndConditions: z
+      .boolean()
+      .refine((val) => val, "You must agree to the terms and conditions"),
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      firstName,
-      lastName,
-      phone,
-      email,
-      city,
-      zip,
-      address,
-      country,
-      products: cart,
+    const formData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      city: city,
+      zip: zip,
+      address: address,
+      country: country,
+      termsAndConditions: document.getElementById("termsAndConditions").checked,
     };
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-    const responseData = await response.json();
-    console.log(response,"response")
-    if (responseData.url) {
-      window.location.href = responseData.url;
-      clearCart();
-     } else {
-       console.error("Stripe URL not found in the response.");
-     }
+    try {
+     formSchema.safeParse(formData);
+      
+    } catch (err) {
+      const errorMessages = err.errors.map(error =>
+    translate(`validation_errors.type.${error.type}`, { givenType: typeof _.get(error.path, person) })
+  );
+
+      console.log(errorMessages, "errorMessages");
     }
-  
+
+
+    if (!formSchema.safeParse(formData).success) {
+      const errorMessages = formSchema
+        .safeParse(formData)
+        .error.errors.map((error) => error.message);
+      alert(errorMessages);
+    } else {
+      // Proceed with form submission as the data is valid
+      // console.log("Form data is valid", result.data);
+      const data = {
+        firstName,
+        lastName,
+        phone,
+        email,
+        city,
+        zip,
+        address,
+        country,
+        products: cart,
+      };
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const responseData = await response.json();
+      console.log(response, "response");
+      if (responseData.url) {
+        window.location.href = responseData.url;
+        clearCart();
+      } else {
+        console.error("Stripe URL not found in the response.");
+      }
+    }
+  };
 
   const addQuantity = (id) => {
     useCart(id);
@@ -221,11 +271,11 @@ const CartPage = () => {
                     onChange={(e) => setAddress(e.target.value)}
                     name="address"
                   />
-                  <input
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="County"
+                  <CountryDropdown
                     value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    onChange={(val) => setCountry(val)}
+                    defaultOptionLabel="Choose Country"
+                    classes="h-10"
                     name="country"
                   />
                   <input
@@ -244,7 +294,11 @@ const CartPage = () => {
                       className="text-sm mb-1 ml-3"
                     >
                       Agree to{" "}
-                      <Link href="/terms" target="_blank" className="text-blue-500">
+                      <Link
+                        href="/terms"
+                        target="_blank"
+                        className="text-blue-500"
+                      >
                         Terms and Conditions
                       </Link>
                     </label>

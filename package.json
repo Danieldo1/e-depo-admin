@@ -27,13 +27,16 @@
     "next-auth": "^4.24.5",
     "npm": "^10.4.0",
     "react": "^18",
+    "react-country-region-selector": "^3.6.1",
     "react-dom": "^18",
     "react-sortablejs": "^6.1.4",
     "react-sweetalert2": "^0.6.0",
     "sortablejs": "^1.15.2",
     "stripe": "^14.17.0",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "uniqid": "^5.4.0"
+    "uniqid": "^5.4.0",
+    "zod": "^3.22.4",
+    "zod-validation-error": "^3.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
