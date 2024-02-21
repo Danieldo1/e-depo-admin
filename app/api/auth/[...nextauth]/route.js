@@ -43,7 +43,6 @@ export async function isAdmin(req, res) {
   if(admin.includes(session?.user?.email)){
     return true
   } else {
-    alert('Unauthorized')
     throw new Error('Unauthorized')
    
   }

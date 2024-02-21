@@ -31,7 +31,7 @@ const Navbar = ({ showMenu }) => {
         LOGO
       </Link>
 
-      <nav className="flex gap-2 flex-col ">
+      <nav className="flex gap-2 flex-col font-semibold">
         <Link href="/admin" className={pathname === "/" ? activeLink : inactiveLink}>
           {" "}
           <LayoutDashboard />
