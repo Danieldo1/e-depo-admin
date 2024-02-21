@@ -62,8 +62,13 @@ const CartPage = () => {
       },
       body: JSON.stringify(data),
     })
-    const result = await response.json()
-    console.log(result)
+    const responseData = await response.json();
+      console.log(response,"response")
+     if (responseData.url) {
+       window.location.href = responseData.url;
+     } else {
+       console.error("Stripe URL not found in the response.");
+     }
     }
   
 
