@@ -24,7 +24,7 @@ const Nav = () => {
   }
 
   return (
-    <header className=" p-4 w-full  bg-[#206ef6]">
+    <header className=" p-4 w-full  bg-[#206ef6] ">
       <div className=" container mx-auto flex justify-between items-center">
         <Link href="/" className="text1">
           LOGO
@@ -52,9 +52,11 @@ const Nav = () => {
           {/* <CartToggle showCart={showCart} setShowCart={setShowCart} cart={cart} /> */}
           <button
             onClick={() => setShowCart(true)}
-            className="relative flex flex-row justify-center items-center"
+            className="relative flex flex-row justify-center items-center group"
           >
-            <span className="text-white hidden md:block">Cart</span>{" "}
+            <span className="text-white hidden md:block group-hover:text-slate-300  relative  transition-all delay-100 duration-300 ease-in-out p-2  gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out">
+              Cart
+            </span>{" "}
             <ShoppingCart className="z-50" />{" "}
             <span className="bg-white  text-[#206ef6] px-1.5 rounded-full absolute top-0 -right-2 z-40 text-sm font-semibold">
               {cart.length}

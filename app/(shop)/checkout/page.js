@@ -116,7 +116,6 @@ const CartPage = () => {
       console.log(response, "response");
       if (responseData.url) {
         window.location.href = responseData.url;
-        clearCart();
       } else {
         console.error("Stripe URL not found in the response.");
       }

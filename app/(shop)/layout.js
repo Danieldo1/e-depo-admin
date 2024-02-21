@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
           className={`${mont.className} ${protest.variable}  bg-[#fafafa] w-screen h-[100vh] `}
         >
           <div className="overflow-hidden ">
-            <Nav />
+            <Nav  />
           </div>
           {children}
         </body>
