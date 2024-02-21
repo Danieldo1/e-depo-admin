@@ -93,7 +93,7 @@ const CartPage = () => {
       <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 mt-3">
         Checkout
       </h1>
-      <div className="grid grid-cols-[1.2fr_1fr]  md:gap-10 lg:gap-40   w-full h-full bg-[#f5f5f5] absolute">
+      <div className="grid grid-cols-[1.3fr_1fr] md:gap-10 lg:gap-40   w-full h-full bg-[#f5f5f5] absolute">
         <div className="bg-[#f5f5f5] rounded-bl-lg md:rounded-b-lg h-3/4">
           <div className="p-5 flex flex-col gap-5 h-full overflow-scroll ">
             <h3 className="text-xl font-bold">Cart Details</h3>
@@ -244,7 +244,7 @@ const CartPage = () => {
                       className="text-sm mb-1 ml-3"
                     >
                       Agree to{" "}
-                      <Link href="/terms" className="text-blue-500">
+                      <Link href="/terms" target="_blank" className="text-blue-500">
                         Terms and Conditions
                       </Link>
                     </label>
