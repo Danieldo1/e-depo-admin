@@ -7,7 +7,7 @@ import Link from "next/link";
 import AllItems from "@/components/shop/AllItems";
 
 const CartPage = () => {
-  const { cart, setCart, useCart, removeProduct } = useContext(CartContext);
+  const { cart, setCart, useCart, removeProduct, clearCart } = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -63,9 +63,10 @@ const CartPage = () => {
       body: JSON.stringify(data),
     })
     const responseData = await response.json();
-      console.log(response,"response")
-     if (responseData.url) {
-       window.location.href = responseData.url;
+    console.log(response,"response")
+    if (responseData.url) {
+      window.location.href = responseData.url;
+      clearCart();
      } else {
        console.error("Stripe URL not found in the response.");
      }
