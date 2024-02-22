@@ -4,7 +4,7 @@ import Link from "next/link";
 const Categories = ({ categories, loading }) => {
   return (
     <div className="">
-      <h2 className="text-5xl font-bold text-gray-800">Categories</h2>
+      <h2 className="text-4xl font-bold text-gray-800">Categories</h2>
       {loading === true && (
         <div className="flex overflow-x-auto gap-4 mt-4">
           {Array.from({ length: 5 }).map((_, index) => (

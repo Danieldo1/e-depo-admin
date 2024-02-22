@@ -54,7 +54,17 @@ const CartToggle = ({ showCart, setShowCart }) => {
   }
 
   return (
-    <main className={` w-screen h-screen fixed top-0 left-0 ${showCart ? "backdrop-blur z-40 " : ""}`}>
+    <main
+      onClick={(e) => {
+        if (e.target.closest("aside")) {
+          return;
+        }
+        setShowCart(false);
+      }}
+      className={` w-screen h-screen fixed top-0 left-0 ${
+        showCart ? "backdrop-blur z-40 " : ""
+      }`}
+    >
       <aside className="fixed top-0 right-0 w-3/4 h-full flex flex-col justify-between gap-4 max-w-lg p-4 bg-[#f5f5f5] border border-gray-200 rounded-lg shadow sm:p-6 md:p-8  z-50 backdrop-blur ">
         <div>
           <h3 className="text-xl font-bold text-gray-900 ">Shopping Cart</h3>
@@ -65,8 +75,10 @@ const CartToggle = ({ showCart, setShowCart }) => {
               <img src="/empty-cart.png" alt="empty-cart" />
               <p className="text-gray-500">to your cart</p>
               <button
-              onClick={() => {setShowCart(false); router.push("/shop")}}
-                
+                onClick={() => {
+                  setShowCart(false);
+                  router.push("/shop");
+                }}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg mt-5"
               >
                 Shop Now

@@ -33,6 +33,7 @@
     "react-sweetalert2": "^0.6.0",
     "sortablejs": "^1.15.2",
     "stripe": "^14.17.0",
+    "swiper": "^11.0.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "uniqid": "^5.4.0",
     "zod": "^3.22.4",

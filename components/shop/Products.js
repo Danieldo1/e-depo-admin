@@ -7,7 +7,7 @@ const Products = ({ products, loading }) => {
 
   return (
     <div className="">
-      <h1 className="text-5xl font-bold text-gray-800">New Products</h1>
+      <h1 className="text-4xl font-bold text-gray-800">New Products</h1>
       <div className="flex overflow-x-auto scrollbar-hide p-7 gap-4 mt-4 ">
         {loading === true && (
           <div className="flex overflow-x-auto gap-4 mt-4">
