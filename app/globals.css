@@ -68,3 +68,9 @@ label {
   transform: translateX(-100%);
   animation: loading 1.5s infinite;
 }
+.logo {
+  @apply text-3xl font-bold text-white text1
+}
+.logo2 {
+  @apply text-3xl font-bold text-blue-500 text1
+}

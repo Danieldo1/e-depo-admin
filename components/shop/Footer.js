@@ -8,7 +8,9 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t mt-10">
       <div className="p-5 flex justify-center lg:justify-start">
-        <p>LOGO</p>
+        <h2 className="logo2">
+          Pet<span className="text-red-500">Plus</span>+
+        </h2>
       </div>
       <div className=" p-5 flex justify-between  ">
         <div className="flex gap-2 flex-col items-start">

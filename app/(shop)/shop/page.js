@@ -56,7 +56,7 @@ const ShopPage = () => {
             ))}
           </div>
         )}
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {products.map((product) => (
             <div
@@ -67,18 +67,20 @@ const ShopPage = () => {
                 href={`/product/${product._id}`}
                 className="border p-4 rounded-md bg-gray-100 flex flex-col h-[370px] "
               >
-                <h3 className="text-lg font-bold">{product.title}</h3>
+                <h3 className="text-lg font-bold">
+                  {truncateDescription(product.title || "")}
+                </h3>
 
                 <p className="text-gray-600 text-sm flex items-center">
-                  {Object.keys(product.properties).map((key, index) => (
-                    <span key={index} className="text-gray-600 text-sm">
-                      <span className="font-bold  capitalize">{key}</span>{" "}
-                      <span className="mx-1 capitalize">
-                        {product.properties[key]}
+                  {product.properties &&
+                    Object.keys(product.properties).map((key, index) => (
+                      <span key={index} className="text-gray-600 text-sm">
+                        <span className="font-bold capitalize">{key}</span>{" "}
+                        <span className="mx-1 capitalize">
+                          {product.properties[key]}
+                        </span>
                       </span>
-                      {/* {index < Object.keys(item.properties).length - 1 ? ", " : ""} */}
-                    </span>
-                  ))}
+                    ))}
                 </p>
                 <div className="flex justify-center items-center">
                   <img

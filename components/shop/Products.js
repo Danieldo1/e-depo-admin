@@ -48,7 +48,9 @@ function truncateDescription(description) {
               <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">
                 NEW
               </p>
-              <h3 className="text-lg font-bold">{product.title}</h3>
+              <h3 className="text-lg font-bold">
+                {truncateDescription(product.title || "")}
+              </h3>
               <div className="flex justify-center items-center">
                 <img
                   src={product.images[0] || "/noimage.svg"}

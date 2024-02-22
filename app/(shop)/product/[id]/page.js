@@ -22,7 +22,6 @@ const ProductPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showCart, setShowCart] = useState(false);
 
-
   const pathname = usePathname();
   const id = pathname.split("/").pop();
 
@@ -54,10 +53,10 @@ const ProductPage = () => {
     );
   };
 
-   const handleImageClick = (index) => {
-     setSelectedImageIndex(index);
-     setLightboxIsOpen(true);
-   };
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+    setLightboxIsOpen(true);
+  };
 
   if (loading === true) {
     return (
@@ -66,25 +65,26 @@ const ProductPage = () => {
       </div>
     );
   }
-if (!!showCart) {
-  return (
-    <CartToggle showCart={showCart} setShowCart={setShowCart} cart={cart} />
-  );
-}
+  if (!!showCart) {
+    return (
+      <CartToggle showCart={showCart} setShowCart={setShowCart} cart={cart} />
+    );
+  }
   return (
     <div className="min-h-screen bg-[#fafafa] p-5 ">
       <div className="flex uppercase text-sm italic text-gray-600 mb-2">
         <p>{category?.name}</p>
-        {Object.entries(item.properties).map(([key, value], index) =>
-          index % 2 === 0 ? (
-            <p key={key} className="mx-0.5">
-              {" "}
-              / {value} /{" "}
-            </p>
-          ) : (
-            <p>{value}</p>
-          )
-        )}
+        {typeof item.properties === "object" &&
+          Object.entries(item.properties).map(([key, value], index) =>
+            index % 2 === 0 ? (
+              <p key={key} className="mx-0.5">
+                {" "}
+                / {value || ""} /{" "}
+              </p>
+            ) : (
+              <p>{value || ""}</p>
+            )
+          )}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4  ">
         {/* Mobile Imgs */}
@@ -159,29 +159,61 @@ if (!!showCart) {
                 Product {item?.title}
               </h2>
               <div className="flex gap-2">
-                {Object.entries(item.properties).map(([key, value]) => (
-                  <div key={key}>
-                    <p className="bg-gray-200 p-2 rounded-md capitalize">
-                      <span className="font-semibold ">{key}</span>: {value}
-                    </p>
-                  </div>
-                ))}
+                {item.properties &&
+                  typeof item.properties === "object" &&
+                  Object.entries(item.properties).map(([key, value]) => (
+                    <div key={key}>
+                      <p className="bg-gray-200 p-2 rounded-md capitalize">
+                        <span className="font-semibold ">{key}</span>: {value}
+                      </p>
+                    </div>
+                  ))}
               </div>
               <h4 className="text-lg font-bold text-gray-800">Description</h4>
               <p className="text-lg text-gray-800">{item?.description}</p>
-            </div>
-            <div className="mt-2">
-              <p className="text-xl font-bold text-gray-700">${item?.price}</p>
+              <div>
+                {item?.features && item.features[0] && (
+                  <>
+                    <h4 className="text-lg font-bold text-gray-800">
+                      Features
+                    </h4>
+                    <ul className="list-disc ml-4">
+                      {item.features[0].split("\n").map((line, index) => (
+                        <li key={index}>{line}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+              <div className="flex justify-between ">
+                {item?.color && (
+                  <div className="flex gap-2 flex-col items-center">
+                    <h4 className="text-lg font-bold text-gray-800">Color</h4>
+                    <p className="text-lg text-gray-800 capitalize">
+                      {item.color}
+                    </p>
+                  </div>
+                )}
+                {item?.weight && (
+                  <div className="flex gap-2 flex-col items-center">
+                    <h4 className="text-lg font-bold text-gray-800">Weight</h4>
+                    <p className="text-lg text-gray-800 ">{item.weight} lbs</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          
+
           <button
             type="button"
-            onClick={() => {useCart(item._id);setShowCart(true)}}
+            onClick={() => {
+              useCart(item._id);
+              setShowCart(true);
+            }}
             className="bg-blue-500 text-white font-semibold text-xl md:text-lg px-4 py-4 rounded-lg items-center flex gap-2 hover:bg-blue-600 w-full  justify-center"
           >
             <ShoppingBag />
-            Add to cart
+            Add to cart ${item?.price}
           </button>
         </div>
       </div>

@@ -13,6 +13,9 @@ const ProductForm = ({
   images: currentPhotos,
   category: currentCategory,
   properties: currentProperties,
+  features: currentFeatures,
+  color: currentColor,
+  weight: currentWeight,
 }) => {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
@@ -20,9 +23,12 @@ const ProductForm = ({
   const [images, setImages] = useState(currentPhotos || []);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(currentCategory || "");
-  const [prodProperties, setProdProperties] = useState( currentProperties || {});
+  const [prodProperties, setProdProperties] = useState(currentProperties || {});
   const [redirect, setRedirect] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [features, setFeatures] = useState(currentFeatures || []);
+  const [color, setColor] = useState(currentColor || "");
+  const [weight, setWeight] = useState(currentWeight || "");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -40,7 +46,17 @@ const ProductForm = ({
 
   const createNewProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images, category, properties: prodProperties };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties: prodProperties,
+      features,
+      color,
+      weight
+    };
     if (_id) {
       await fetch(`/api/products`, {
         method: "PUT",
@@ -87,19 +103,16 @@ const ProductForm = ({
   };
 
   const handleDeleteImage = (index) => {
-    // Create a copy of the current images array
     const updatedImages = [...images];
-    // Remove the image at the specified index
     updatedImages.splice(index, 1);
-    // Update the state with the modified array (removing the deleted image)
     setImages(updatedImages);
   };
 
-  const changeProductProperty =(propName,value) => {
+  const changeProductProperty = (propName, value) => {
     setProdProperties((prev) => {
       return { ...prev, [propName]: value };
     });
-  }
+  };
 
   const propertiesTaAdd = [];
 
@@ -220,13 +233,56 @@ const ProductForm = ({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <label htmlFor="">Product Price</label>
-      <input
-        type="number"
-        placeholder="Product Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
+      <label>Product Features</label>
+      <textarea
+        type="text"
+        placeholder="Product Features"
+        value={features}
+        onChange={(e) => setFeatures(e.target.value)}
       />
+      <label>Product Color</label>
+      <select value={color} onChange={(e) => setColor(e.target.value)}>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="orange">Orange</option>
+        <option value="purple">Purple</option>
+        <option value="black">Black</option>
+        <option value="white">White</option>
+        <option value="brown">Brown</option>
+        <option value="gray">Gray</option>
+        <option value="pink">Pink</option>
+        <option value="cyan">Cyan</option>
+        <option value="magenta">Magenta</option>
+        <option value="lime">Lime</option>
+        <option value="maroon">Maroon</option>
+        <option value="navy">Navy</option>
+        <option value="silver">Silver</option>
+        <option value="violet">Violet</option>
+        <option value="fuchsia">Fuchsia</option>
+        <option value="olive">Olive</option>
+        <option value="teal">Teal</option>
+        <option value="aqua">Aqua</option>
+      </select>
+      <div className="flex justify-between mb-3 mt-3">
+        <label>Product weight</label>
+        <label htmlFor="">Product Price</label>
+      </div>
+      <div className="flex gap-10 mb-6">
+        <input
+          type="number"
+          placeholder="Product weight"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Product Price"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+      </div>
       <div className="flex justify-between">
         <button className="btn-back" onClick={() => router.back()}>
           Back

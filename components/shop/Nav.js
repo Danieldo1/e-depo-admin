@@ -13,9 +13,9 @@ const Nav = () => {
   const { cart } = useContext(CartContext);
 
   const inactiveLink =
-    "hover:text-slate-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2";
+    "hover:text-red-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2";
   const activeLink =
-    "text-slate-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out";
+    "text-red-300  relative inline-block transition-all delay-100 duration-300 ease-in-out p-2 flex gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out";
 
   if (!!showCart) {
     return (
@@ -26,8 +26,10 @@ const Nav = () => {
   return (
     <header className=" p-4 w-full  bg-[#206ef6] ">
       <div className=" container mx-auto flex justify-between items-center">
-        <Link href="/" className="text1">
-          LOGO
+        <Link href="/" className="text1 ">
+          <h2 className="logo">
+            Pet<span className="text-red-500">Plus</span>+
+          </h2>
         </Link>
         <nav className="flex gap-4 text-white font-bold">
           <Link
@@ -54,11 +56,11 @@ const Nav = () => {
             onClick={() => setShowCart(true)}
             className="relative flex flex-row justify-center items-center group"
           >
-            <span className="text-white hidden md:block group-hover:text-slate-300  relative  transition-all delay-100 duration-300 ease-in-out p-2  gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out">
+            <span className="text-white hidden md:block group-hover:text-red-300  relative  transition-all delay-100 duration-300 ease-in-out p-2  gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out">
               Cart
             </span>{" "}
-            <ShoppingCart className="z-20" />{" "}
-            <span className="bg-white  text-[#206ef6] px-1.5 rounded-full absolute top-0 -right-2 z-40 text-sm font-semibold">
+            <ShoppingCart className="z-20 group-hover:text-red-300 transition-all delay-100 duration-300 ease-in-out" />{" "}
+            <span className="bg-white group-hover:bg-red-300 transition-all delay-100 duration-300 ease-in-out text-[#206ef6] px-1.5 rounded-full absolute top-0 -right-2 z-40 text-sm font-semibold">
               {cart.length}
             </span>
           </button>
