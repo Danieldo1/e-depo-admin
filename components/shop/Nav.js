@@ -57,7 +57,7 @@ const Nav = () => {
             <span className="text-white hidden md:block group-hover:text-slate-300  relative  transition-all delay-100 duration-300 ease-in-out p-2  gap-2 after:content-[''] after:w-0 after:absolute after:h-1 after:bg-blue-800 after:bottom-0 after:left-0 after:transition-all after:duration-300 after:ease-in-out">
               Cart
             </span>{" "}
-            <ShoppingCart className="z-50" />{" "}
+            <ShoppingCart className="z-20" />{" "}
             <span className="bg-white  text-[#206ef6] px-1.5 rounded-full absolute top-0 -right-2 z-40 text-sm font-semibold">
               {cart.length}
             </span>

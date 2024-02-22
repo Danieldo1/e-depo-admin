@@ -32,9 +32,16 @@ const CartWrapper = ({ children }) => {
     setCart((prevCart) => [...prevCart, productId]);
   };
 
-  const removeProduct = (productId) => {
-    setCart((prevCart) => prevCart.filter((id) => id !== productId));
-  };
+const removeProduct = (productId) => {
+  setCart((prev) => {
+    const position = prev.indexOf(productId);
+    if (position !== -1) {
+      return prev.filter((p, i) => i !== position);
+    } else {
+      return prev;
+    }
+  });
+};
 
   const clearCart = () => {
     setCart([]);

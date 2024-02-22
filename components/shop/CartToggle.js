@@ -66,8 +66,8 @@ const CartToggle = ({ showCart, setShowCart }) => {
       }`}
     >
       <aside className="fixed top-0 right-0 w-3/4 h-full flex flex-col justify-between gap-4 max-w-lg p-4 bg-[#f5f5f5] border border-gray-200 rounded-lg shadow sm:p-6 md:p-8  z-50 backdrop-blur ">
-        <div>
           <h3 className="text-xl font-bold text-gray-900 ">Shopping Cart</h3>
+        <div className="overflow-scroll h-full flex flex-col">
           {!cart?.length && (
             <div className="flex flex-col justify-center items-center h-full mt-5">
               <p className="text-gray-500">Cart is empty</p>
@@ -106,11 +106,11 @@ const CartToggle = ({ showCart, setShowCart }) => {
             </div>
           )}
           {loading === false && cartItems?.length > 0 && (
-            <>
+            <div className="">
               {cartItems.map((item) => (
                 <div
                   key={item._id}
-                  className="border border-gray-200 rounded-lg p-4"
+                  className="border border-gray-200 rounded-lg p-4 my-2 bg-white"
                 >
                   <AllItems
                     item={item}
@@ -120,7 +120,7 @@ const CartToggle = ({ showCart, setShowCart }) => {
                   />
                 </div>
               ))}
-            </>
+            </div>
           )}
         </div>
         <button
@@ -130,7 +130,7 @@ const CartToggle = ({ showCart, setShowCart }) => {
           <XIcon className="w-5 h-5" />
         </button>
 
-        <div className="p-5 bg-[#f5f5f5] text-black border-t border-gray-200">
+        <div className="p-5 bg-[#f5f5f5] text-black border-t border-gray-200 z-30">
           <div className="flex justify-between items-center ">
             <div className="flex flex-col">
               <p>Total Items: {cart.length}</p>

@@ -4,7 +4,13 @@ import { CartContext } from "@/components/shop/CartWrapper";
 
 const Products = ({ products, loading }) => {
   const { cart, setCart, useCart } = useContext(CartContext);
-
+function truncateDescription(description) {
+  const words = description.split(" ");
+  if (words.length > 3) {
+    return words.slice(0, 3).join(" ") + "...";
+  }
+  return description;
+}
   return (
     <div className="">
       <h1 className="text-4xl font-bold text-gray-800">New Products</h1>
@@ -32,11 +38,13 @@ const Products = ({ products, loading }) => {
         )}
         {products.map((product) => (
           <div
-            
             key={product._id}
-            className="min-w-[300px] cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
+            className="w-[300px] cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
           >
-            <Link href={`/product/${product._id}`} className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] ">
+            <Link
+              href={`/product/${product._id}`}
+              className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] "
+            >
               <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">
                 NEW
               </p>
@@ -48,8 +56,8 @@ const Products = ({ products, loading }) => {
                   className="w-full max-w-48 max-h-48 object-cover rounded-md my-2"
                 />
               </div>
-              <p className="text-gray-600 flex-grow overflow-hidden text-ellipsis capitalize">
-                {product.description || ""}
+              <p className="text-gray-600 flex-grow overflow-hidden">
+                {truncateDescription(product.description) || ""}
               </p>
               <div className="flex justify-between items-center">
                 <p className="text-lg font-semibold text-gray-800 mt-2 text-end">
