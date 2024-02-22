@@ -7,12 +7,17 @@ import { CartContext } from "@/components/shop/CartWrapper";
 const ShopPage = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-
+  const [sortOption, setSortOption] = useState("default");
+  const [filter, setFilter] = useState("");
   const { cart, setCart, useCart } = useContext(CartContext);
 
   useEffect(() => {
     newProducts();
   }, []);
+
+    useEffect(() => {
+      sortProducts();
+    }, [sortOption, products]);
 
   const newProducts = async () => {
     await fetch("/api/shopProducts").then((response) => {
@@ -22,6 +27,43 @@ const ShopPage = () => {
       });
     });
   };
+
+  const sortProducts = () => {
+    const sortedProducts = [...products].sort((a, b) => {
+      let comparison = 0;
+      switch (sortOption) {
+        case "default":
+          comparison =  products
+          break;
+        case "price_asc":
+          comparison = a.price - b.price;
+          break;
+        case "price_desc":
+          comparison = b.price - a.price;
+          break;
+        case "title_asc":
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case "title_desc":
+          comparison = b.title.localeCompare(a.title);
+          break;
+      }
+      return comparison;
+    });
+    setProducts(sortedProducts);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  function handleSort(value) {
+    setSortOption(value);
+  }
+
+  function handleFilter(event) {
+    setFilter(event.target.value);
+  }
 
   function truncateDescription(description) {
     const words = description.split(" ");
@@ -33,6 +75,32 @@ const ShopPage = () => {
   return (
     <main className="bg-[#fafafa] p-5 ">
       <h2 className="text-4xl font-bold text-gray-800">All Products</h2>
+      <div className="flex justify-between items-center gap-10">
+        <div className="w-[75%]">
+          <input
+            type="text"
+            placeholder="Search products"
+            value={filter}
+            onChange={handleFilter}
+            className="mb-3 p-2 border rounded"
+          />
+        </div>
+        <div className="w-[25%]">
+          <select
+            value={sortOption}
+            onChange={(e) => handleSort(e.target.value)}
+            className="mb-3 p-2 border rounded"
+          >
+            <option value="default">New</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="title_asc">Title: A to Z</option>
+            <option value="title_desc">Title: Z to A</option>
+          </select>
+        </div>
+        
+      </div>
+
       <div className="mt-3">
         {/* Loading skeleton */}
         {loading === true && (
@@ -58,11 +126,12 @@ const ShopPage = () => {
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div
-              key={product._id}
+            key={product._id}
               className="w-full h-full cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
             >
+            {JSON.stringify(product.properties)}
               <Link
                 href={`/product/${product._id}`}
                 className="border p-4 rounded-md bg-gray-100 flex flex-col h-[370px] "
@@ -70,7 +139,6 @@ const ShopPage = () => {
                 <h3 className="text-lg font-bold">
                   {truncateDescription(product.title || "")}
                 </h3>
-
                 <p className="text-gray-600 text-sm flex items-center">
                   {product.properties &&
                     Object.keys(product.properties).map((key, index) => (
