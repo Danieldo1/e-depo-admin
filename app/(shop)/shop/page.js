@@ -7,6 +7,7 @@ import { CartContext } from "@/components/shop/CartWrapper";
 const ShopPage = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+
   const { cart, setCart, useCart } = useContext(CartContext);
 
   useEffect(() => {
@@ -55,7 +56,8 @@ const ShopPage = () => {
             ))}
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  ">
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {products.map((product) => (
             <div
               key={product._id}

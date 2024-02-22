@@ -3,6 +3,7 @@ import "../globals.css";
 import SessionWrapper from "../../components/SessionWrapper";
 import Nav from "@/components/shop/Nav";
 import CartWrapper from "@/components/shop/CartWrapper";
+import Footer from "@/components/shop/Footer";
 
 const mont = Montserrat({ subsets: ["latin"] });
 const protest = Kanit({
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
             <Nav  />
           </div>
           {children}
+          <Footer />
         </body>
       </html>
       </CartWrapper>
