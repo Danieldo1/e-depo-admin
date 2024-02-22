@@ -110,14 +110,18 @@ const CartToggle = ({ showCart, setShowCart }) => {
               {cartItems.map((item) => (
                 <div
                   key={item._id}
-                  className="border border-gray-200 rounded-lg p-4 my-2 bg-white"
+                  onClick={() => setShowCart(false)}
+                  className="border border-gray-200 rounded-lg p-4 my-2 bg-white cursor-pointer"
                 >
+                  <Link href={`/product/${item._id}`} >
+
                   <AllItems
                     item={item}
                     addQuantity={addQuantity}
                     removeQuantity={removeQuantity}
                     cart={cart}
                   />
+                  </Link>
                 </div>
               ))}
             </div>

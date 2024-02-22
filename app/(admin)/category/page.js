@@ -21,7 +21,6 @@ function CategoryPage({ swal }) {
   const fetchCategories = async () => {
     await fetch("/api/category").then((response) => {
       response.json().then((data) => {
-        console.log(data);
         setCategories(data);
       });
     });
@@ -51,7 +50,6 @@ function CategoryPage({ swal }) {
         },
       }).then((response) => {
         response.json().then((data) => {
-          console.log(data);
           setEditing(null);
           fetchCategories();
           setName("");
@@ -71,7 +69,6 @@ function CategoryPage({ swal }) {
         },
       }).then((response) => {
         response.json().then((data) => {
-          console.log(data);
           fetchCategories();
           setName("");
           setParent("");

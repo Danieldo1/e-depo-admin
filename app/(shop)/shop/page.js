@@ -9,15 +9,16 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [sortOption, setSortOption] = useState("default");
   const [filter, setFilter] = useState("");
+const [sortedProducts, setSortedProducts] = useState([]);
   const { cart, setCart, useCart } = useContext(CartContext);
 
   useEffect(() => {
     newProducts();
   }, []);
 
-    useEffect(() => {
-      sortProducts();
-    }, [sortOption, products]);
+ useEffect(() => {
+   setSortedProducts(sortProducts());
+ }, [sortOption, products]);
 
   const newProducts = async () => {
     await fetch("/api/shopProducts").then((response) => {
@@ -29,11 +30,11 @@ const ShopPage = () => {
   };
 
   const sortProducts = () => {
-    const sortedProducts = [...products].sort((a, b) => {
+    return [...products].sort((a, b) => {
       let comparison = 0;
       switch (sortOption) {
         case "default":
-          comparison =  products
+          comparison = products;
           break;
         case "price_asc":
           comparison = a.price - b.price;
@@ -98,7 +99,6 @@ const ShopPage = () => {
             <option value="title_desc">Title: Z to A</option>
           </select>
         </div>
-        
       </div>
 
       <div className="mt-3">
@@ -128,10 +128,9 @@ const ShopPage = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {filteredProducts.map((product) => (
             <div
-            key={product._id}
+              key={product._id}
               className="w-full h-full cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
             >
-            {JSON.stringify(product.properties)}
               <Link
                 href={`/product/${product._id}`}
                 className="border p-4 rounded-md bg-gray-100 flex flex-col h-[370px] "

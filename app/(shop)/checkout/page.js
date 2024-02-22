@@ -92,8 +92,6 @@ const CartPage = () => {
         .error.errors.map((error) => error.message);
       alert(errorMessages);
     } else {
-      // Proceed with form submission as the data is valid
-      // console.log("Form data is valid", result.data);
       const data = {
         firstName,
         lastName,
@@ -113,7 +111,6 @@ const CartPage = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-      console.log(response, "response");
       if (responseData.url) {
         window.location.href = responseData.url;
       } else {

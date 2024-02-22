@@ -50,7 +50,6 @@ const OrderIdPage = () => {
           body: JSON.stringify({ fulfilled: true }),
         });
         const data = await response.json();
-        console.log(data);
         router.push("/orders");
       } catch (error) {
         console.error('Failed to update order:', error);
