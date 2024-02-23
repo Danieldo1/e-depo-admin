@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import SessionWrapper from '../../components/SessionWrapper'
 
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -9,7 +11,8 @@ export const metadata = {
   description: "E-Depo Admin Dashboard",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
   return (
     <SessionWrapper>
     <html lang="en">

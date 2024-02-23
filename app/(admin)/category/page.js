@@ -5,7 +5,8 @@ import Link from "next/link";
 import { Trash2, UploadCloud,Loader2 } from "lucide-react";
 import { withSwal } from "react-sweetalert2";
 
-function CategoryPage({ swal }) {
+
+ function CategoryPage({ swal }) {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parent, setParent] = useState("");
@@ -13,12 +14,12 @@ function CategoryPage({ swal }) {
   const [properties, setProperties] = useState([]);
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-
   useEffect(() => {
     fetchCategories();
   }, []);
-
+  
   const fetchCategories = async () => {
+    
     await fetch("/api/category").then((response) => {
       response.json().then((data) => {
         setCategories(data);

@@ -3,23 +3,88 @@
 import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "@/components/shop/CartWrapper";
+import { useSession } from "next-auth/react";
+import { Heart } from "lucide-react";
 
 const ShopPage = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [sortOption, setSortOption] = useState("default");
   const [filter, setFilter] = useState("");
-const [sortedProducts, setSortedProducts] = useState([]);
+  const [sortedProducts, setSortedProducts] = useState([]);
+const [likedProducts, setLikedProducts] = useState(null || {});
+const [wishList, setWishList] = useState([]);
   const { cart, setCart, useCart } = useContext(CartContext);
+  const { data: session } = useSession();
 
   useEffect(() => {
     newProducts();
   }, []);
 
- useEffect(() => {
-   setSortedProducts(sortProducts());
- }, [sortOption, products]);
+  useEffect(() => {
+    setSortedProducts(sortProducts());
+  }, [sortOption, products]);
 
+useEffect(() => {
+  fetchLikedProducts();
+}, [session?.user?.email, likedProducts]);
+
+
+  const fetchLikedProducts = async () => {
+    try {
+      await fetch(`/api/wishlist?email=${session?.user?.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Assuming data[0] contains the user object with the wishList
+         
+          if (data[0] && Array.isArray(data[0].whishList)) {
+            // make sure to spell `whishList` as it is in the object
+            setWishList(data[0].whishList);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  const handleLikeClick = (e, productId) => {
+    e.preventDefault(); // Prevent default action (e.g., navigating to a link)
+    handleLike(productId);
+  };
+  const handleLike = async (productId) => {
+    const isLiked = likedProducts ? likedProducts[productId] : false;
+    const method = isLiked ? "DELETE" : "POST";
+
+    try {
+      const response = await fetch("/api/wishlist", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: session?.user?.email, productId }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      setLikedProducts((prevLiked) => ({
+        ...prevLiked,
+        [productId]: !isLiked,
+      }));
+
+      // Update wishList state if the product is unliked
+      if (isLiked) {
+        setWishList((prevWishList) =>
+          prevWishList.filter((id) => id !== productId)
+        );
+      } else {
+        // If the product is liked, add it to the wishList state
+        setWishList((prevWishList) => [...prevWishList, productId]);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const newProducts = async () => {
     await fetch("/api/shopProducts").then((response) => {
       response.json().then((data) => {
@@ -51,7 +116,6 @@ const [sortedProducts, setSortedProducts] = useState([]);
       }
       return comparison;
     });
-    setProducts(sortedProducts);
   };
 
   const filteredProducts = products.filter((product) =>
@@ -76,6 +140,7 @@ const [sortedProducts, setSortedProducts] = useState([]);
   return (
     <main className="bg-[#fafafa] p-5 ">
       <h2 className="text-4xl font-bold text-gray-800">All Products</h2>
+
       <div className="flex justify-between items-center gap-10">
         <div className="w-[75%]">
           <input
@@ -129,12 +194,25 @@ const [sortedProducts, setSortedProducts] = useState([]);
           {filteredProducts.map((product) => (
             <div
               key={product._id}
-              className="w-full h-full cursor-pointer  shrink-0 relative hover:scale-105 transition-all delay-100 duration-300 ease-in"
+              className="w-full h-full cursor-pointer  shrink-0  hover:scale-105 transition-all delay-100 duration-300 ease-in"
             >
               <Link
                 href={`/product/${product._id}`}
-                className="border p-4 rounded-md bg-gray-100 flex flex-col h-[370px] "
+                className="border p-4 rounded-md bg-gray-100 flex flex-col relative h-[370px] "
               >
+                <button
+                  onClick={(e) => handleLikeClick(e, product._id)}
+                  className="h-6 absolute top-0 right-0 z-30"
+                >
+                  <Heart
+                    className={
+                      wishList.includes(product._id)
+                        ? "text-red-500"
+                        : "text-gray-900"
+                    }
+                    fill={wishList.includes(product._id) ? "red" : "none"}
+                  />
+                </button>
                 <h3 className="text-lg font-bold">
                   {truncateDescription(product.title || "")}
                 </h3>

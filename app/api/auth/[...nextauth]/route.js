@@ -12,10 +12,11 @@ import { Person} from "@/lib/models/Person"
 
 
 
+
 const admin=['daniel.speranskiy@gmail.com']
 
 export const authOptions = {
-  
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -29,41 +30,30 @@ export const authOptions = {
         const user = await Person.findOne({ email: credentials.email });
         if (user.password === credentials.password) {
           return user;
-        } 
-        if(user.password !== credentials.password){
-          return null
         }
-        if(!user){
-          return null
+        if (user.password !== credentials.password) {
+          return null;
         }
-       return {
-         name: user.name,
-         email: user.email,
-       };
-      }
+        if (!user) {
+          return null;
+        }
+        return {
+          name: user.name,
+          email: user.email,
+        };
+      },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+
   adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
-
   },
   pages: {
     signIn: "/login",
+    signOut: "/",
   },
-
-  // callbacks: {
-  //   session: ({ session, token, user }) => {
-      
-  //     if (admin.includes(session?.user?.email)) {
-  //       return session;
-  //     } else {
-  //       return redirect("/");
-  //     }
-  //   },
-  // },
 };
 
 const handler = NextAuth(authOptions)
@@ -76,7 +66,6 @@ export async function isAdmin(req, res) {
   if(admin.includes(session?.user?.email)){
     return true
   } else {
-    throw new Error('Unauthorized')
-   
+   redirect("/login")
   }
 }
