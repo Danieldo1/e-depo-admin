@@ -33,9 +33,9 @@ export async function POST(req) {
         ContentType: file.type,
       })
     );
-      const links=[]
-      const link=`https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${newFile}`
-      links.push(link)
-      return new Response(JSON.stringify(links));
+    const links = [];
+    const link = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${newFile}`;
+    links.push(link);
+    return new Response(JSON.stringify(links));
   }
 }

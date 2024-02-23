@@ -24,28 +24,22 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       id: "credentials",
-      credentials: {
-        username: {
-          label: "Email",
-          type: "email",
-          placeholder: "johndoe@email.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, req) {
-        const email = credentials?.username;
-        const password = credentials?.password;
-       await connectDB();
-        const user = await Person.findOne({ email });
-        if (user && user.password === password) {
+      async authorize(credentials) {
+        await connectDB();
+        const user = await Person.findOne({ email: credentials.email });
+        if (user.password === credentials.password) {
           return user;
+        } 
+        if(user.password !== credentials.password){
+          return null
         }
         if(!user){
-          throw new Error('User not found')
+          return null
         }
-        if(user.password !== password){
-          throw new Error('Incorrect password')
-        }
+       return {
+         name: user.name,
+         email: user.email,
+       };
       }
     }),
   ],
@@ -55,6 +49,9 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
 
+  },
+  pages: {
+    signIn: "/login",
   },
 
   // callbacks: {

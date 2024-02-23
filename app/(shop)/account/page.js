@@ -1,21 +1,56 @@
 "use client";
 
-import React from "react";
-import { useSession, signIn } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const AccountPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  fetchUser( session?.user?.email);
+}, [session]);
+
+const fetchUser = async () => {
+  await fetch(`api/register?id=${session?.user?.email}`)
+    .then((res) => res.json())
+    .then((data) => {
+      setUserInfo(data[0]);
+      setLoading(false);
+    });
+};
+
+if(loading){
+  return (
+    <div className="bg-[#fafafa] p-5 h-screen">
+      <h2 className="text-4xl font-bold text-gray-800">Loading...</h2>
+    </div>
+  )
+}
 
   if (session) {
     return (
-      <div>
-        <div>AccountPage1</div>
-        <div>{session.user.name}</div>
-        <div>{session.user.email}</div>
+      <div className="bg-[#fafafa] p-5 h-[70%]">
+        <div className="flex justify-between items-center">
+          <h2 className="text-4xl font-bold text-gray-800">Welcome, {userInfo && userInfo.email.split("@")[0]}</h2>
+        <button
+          onClick={() => signOut()}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded "
+          >
+          Log out
+        </button>
+
+        </div>
+        <div>
+          <button>Wishlist</button>
+          <button>Orders</button> 
+        </div>
+          {JSON.stringify(userInfo)}
       </div>
-    )
+    );
   }
 
   return (
@@ -32,13 +67,13 @@ const AccountPage = () => {
       Sign up
     </button>
     <p className="text-gray-600 mt-4">or</p>
-    {/* <button
+    <button
      
-     onClick={() => signIn('credentials', { callbackUrl: '/' })}
+     onClick={() => router.push('/login')}
       className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
     >
       Log in
-    </button> */}
+    </button>
   </div>
 </div>
   )

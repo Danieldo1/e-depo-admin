@@ -43,7 +43,7 @@ const AdminPage = () => {
           className="border p-2 border-gray-300 bg-gray-200 block w-full my-4 rounded-lg disabled:bg-gray-700"
         />
         <button
-          type="submit"
+          onClick={() => signIn("credentials", { email, password, callbackUrl: "/" })}
           disabled={logging}
           className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full w-full disabled:bg-gray-700 disabled:cursor-not-allowed"
         >
