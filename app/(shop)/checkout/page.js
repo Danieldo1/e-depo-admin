@@ -7,6 +7,8 @@ import Link from "next/link";
 import AllItems from "@/components/shop/AllItems";
 import { CountryDropdown } from "react-country-region-selector";
 import { z } from "zod";
+import {useSession} from "next-auth/react"
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const { cart, setCart, useCart, removeProduct, clearCart } =
@@ -21,6 +23,14 @@ const CartPage = () => {
   const [zip, setZip] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
+  const { data: session } = useSession();
+
+  const router = useRouter();
+
+  if(!session){
+    router.push("/account");
+  } 
+
 
   useEffect(() => {
     if (cart.length > 0) {

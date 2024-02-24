@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CartContext } from "@/components/shop/CartWrapper";
 import { useSession } from "next-auth/react";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ShopPage = () => {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const [wishList, setWishList] = useState([]);
   const { cart, setCart, useCart } = useContext(CartContext);
   const { data: session } = useSession();
 
+      const router = useRouter();
   useEffect(() => {
     newProducts();
   }, []);
@@ -35,10 +37,7 @@ useEffect(() => {
       await fetch(`/api/wishlist?email=${session?.user?.email}`)
         .then((res) => res.json())
         .then((data) => {
-          // Assuming data[0] contains the user object with the wishList
-         
           if (data[0] && Array.isArray(data[0].whishList)) {
-            // make sure to spell `whishList` as it is in the object
             setWishList(data[0].whishList);
           }
         });
@@ -49,8 +48,13 @@ useEffect(() => {
 
 
   const handleLikeClick = (e, productId) => {
-    e.preventDefault(); // Prevent default action (e.g., navigating to a link)
-    handleLike(productId);
+    e.preventDefault(); 
+    if(session){
+
+      handleLike(productId);
+    } else {
+      router.push("/login");
+    }
   };
   const handleLike = async (productId) => {
     const isLiked = likedProducts ? likedProducts[productId] : false;

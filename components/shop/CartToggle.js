@@ -8,6 +8,7 @@ import Link from "next/link";
 import { XIcon } from "lucide-react";
 import AllItems from "./AllItems";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const CartToggle = ({ showCart, setShowCart }) => {
   if (!showCart) return null;
@@ -16,11 +17,14 @@ const CartToggle = ({ showCart, setShowCart }) => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
+
   useEffect(() => {
     if (cart.length > 0) {
       fetchProducts();
     }
   }, [cart]);
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -36,6 +40,17 @@ const CartToggle = ({ showCart, setShowCart }) => {
       console.error("Error fetching products:", error);
     }
   };
+
+  const handleCheckoutClick = () => {
+    setShowCart(false);
+    if (session !== null) {
+      router.push("/checkout");
+    } else if(!session || !session.user || !session.user.email || session === null) {
+      router.push("/account");
+    }
+  };
+
+
 
   const addQuantity = (id) => {
     useCart(id);
@@ -66,7 +81,7 @@ const CartToggle = ({ showCart, setShowCart }) => {
       }`}
     >
       <aside className="fixed top-0 right-0 w-3/4 h-full flex flex-col justify-between gap-4 max-w-lg p-4 bg-[#f5f5f5] border border-gray-200 rounded-lg shadow sm:p-6 md:p-8  z-50 backdrop-blur ">
-          <h3 className="text-xl font-bold text-gray-900 ">Shopping Cart</h3>
+        <h3 className="text-xl font-bold text-gray-900 ">Shopping Cart</h3>
         <div className="overflow-scroll h-full flex flex-col">
           {!cart?.length && (
             <div className="flex flex-col justify-center items-center h-full mt-5">
@@ -113,14 +128,13 @@ const CartToggle = ({ showCart, setShowCart }) => {
                   onClick={() => setShowCart(false)}
                   className="border border-gray-200 rounded-lg p-4 my-2 bg-white cursor-pointer"
                 >
-                  <Link href={`/product/${item._id}`} >
-
-                  <AllItems
-                    item={item}
-                    addQuantity={addQuantity}
-                    removeQuantity={removeQuantity}
-                    cart={cart}
-                  />
+                  <Link href={`/product/${item._id}`}>
+                    <AllItems
+                      item={item}
+                      addQuantity={addQuantity}
+                      removeQuantity={removeQuantity}
+                      cart={cart}
+                    />
                   </Link>
                 </div>
               ))}
@@ -145,7 +159,7 @@ const CartToggle = ({ showCart, setShowCart }) => {
               </h2>
             </div>
             {/* <div className="text-lg font-bold">Subtotal: ${subtotal}</div> */}
-            {!cart.length > 0 ? (
+            {!cart.length > 0 && session !== null ? (
               <button
                 type="submit"
                 className={
@@ -156,15 +170,14 @@ const CartToggle = ({ showCart, setShowCart }) => {
                 Payment <ArrowRightCircle />
               </button>
             ) : (
-              <Link
-                href={"/checkout"}
-                onClick={() => setShowCart(false)}
+              <button
+                onClick={handleCheckoutClick}
                 className={
                   "bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                 }
               >
                 Checkout <ArrowRightCircle />
-              </Link>
+              </button>
             )}
           </div>
         </div>
