@@ -51,8 +51,9 @@ const CategoryPageOne = () => {
           <div className="h-12 w-3/4 bg-gray-300 rounded mt-2 mb-4"></div>
         </div>
       ) : (
-        <h2 className="text-4xl font-bold text-gray-800">
-          Products in <span className="capitalize">{catName.name}</span>{" "}
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
+          Products in{" "}
+          <span className="capitalize">"{catName.name}"</span>{" "}
         </h2>
       )}
       {loading ? (
@@ -118,7 +119,7 @@ const CategoryPageOne = () => {
                     onClick={() => useCart(product._id)}
                     className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                   >
-                    Add to cart
+                    Quick Add
                   </button>
                 </div>
               </Link>

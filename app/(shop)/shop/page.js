@@ -13,12 +13,12 @@ const ShopPage = () => {
   const [sortOption, setSortOption] = useState("default");
   const [filter, setFilter] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]);
-const [likedProducts, setLikedProducts] = useState(null || {});
-const [wishList, setWishList] = useState([]);
+  const [likedProducts, setLikedProducts] = useState(null || {});
+  const [wishList, setWishList] = useState([]);
   const { cart, setCart, useCart } = useContext(CartContext);
   const { data: session } = useSession();
 
-      const router = useRouter();
+  const router = useRouter();
   useEffect(() => {
     newProducts();
   }, []);
@@ -27,10 +27,9 @@ const [wishList, setWishList] = useState([]);
     setSortedProducts(sortProducts());
   }, [sortOption, products]);
 
-useEffect(() => {
-  fetchLikedProducts();
-}, [session?.user?.email, likedProducts]);
-
+  useEffect(() => {
+    fetchLikedProducts();
+  }, [session?.user?.email, likedProducts]);
 
   const fetchLikedProducts = async () => {
     try {
@@ -44,13 +43,11 @@ useEffect(() => {
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   const handleLikeClick = (e, productId) => {
-    e.preventDefault(); 
-    if(session){
-
+    e.preventDefault();
+    if (session) {
       handleLike(productId);
     } else {
       router.push("/login");
@@ -143,7 +140,7 @@ useEffect(() => {
   }
   return (
     <main className="bg-[#fafafa] p-5 ">
-      <h2 className="text-4xl font-bold text-gray-800">All Products</h2>
+      <h2 className="text-4xl font-bold text-gray-800 mb-3">All Products</h2>
 
       <div className="flex justify-between items-center gap-10">
         <div className="w-[75%]">
@@ -250,7 +247,7 @@ useEffect(() => {
                     onClick={() => useCart(product._id)}
                     className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                   >
-                    Add to cart
+                    Quick Add
                   </button>
                 </div>
               </Link>

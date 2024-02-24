@@ -30,7 +30,7 @@ const CartPage = () => {
   if (!session) {
     router.push("/account");
   }
-  console.log(session);
+
 
   useEffect(() => {
     if (cart.length > 0) {
