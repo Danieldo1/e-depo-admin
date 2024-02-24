@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "@/components/shop/CartWrapper";
 
-const Products = ({ products, loading }) => {
+const Products = ({ products, loading, showNew }) => {
   const { cart, setCart, useCart } = useContext(CartContext);
 function truncateDescription(description) {
   const words = description.split(" ");
@@ -13,7 +13,6 @@ function truncateDescription(description) {
 }
   return (
     <div className="">
-      <h1 className="text-4xl font-bold text-gray-800">New Products</h1>
       <div className="flex overflow-x-auto scrollbar-hide p-7 gap-4 mt-4 ">
         {loading === true && (
           <div className="flex overflow-x-auto gap-4 mt-4">
@@ -45,9 +44,12 @@ function truncateDescription(description) {
               href={`/product/${product._id}`}
               className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] "
             >
-              <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">
-                NEW
-              </p>
+             
+              {showNew === true ? (
+                <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">
+                  NEW
+                </p>
+              ): null}
               <h3 className="text-lg font-bold">
                 {truncateDescription(product.title || "")}
               </h3>

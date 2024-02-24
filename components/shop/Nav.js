@@ -27,11 +27,11 @@ const Nav = () => {
     <header className=" p-4 w-full  bg-[#206ef6] ">
       <div className=" container mx-auto flex justify-between items-center">
         <Link href="/" className="text1 ">
-          <h2 className="logo">
+          <h2 className="text-2xl md:text-4xl font-bold text-white text1">
             Pet<span className="text-red-500">Plus</span>+
           </h2>
         </Link>
-        <nav className="flex gap-4 text-white font-bold">
+        <nav className="flex gap-1 text-white font-bold">
           <Link
             href="/shop"
             className={pathname === "/shop" ? activeLink : inactiveLink}

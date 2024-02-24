@@ -10,6 +10,7 @@ const ShopsPage = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [showNew, setShowNew] = useState(true);
 useEffect(() => {
   newProducts()
   categoryProducts()
@@ -35,8 +36,9 @@ const categoryProducts = async () => {
   return (
     <main className="bg-[#fafafa] p-5 ">
       <Hero />
-        <Products products={products} loading={loading} />
-        <Categories categories={categories} loading={loading} />
+      <h1 className="text-4xl font-bold text-gray-800">New Products</h1>
+      <Products products={products} loading={loading} showNew={showNew} />
+      <Categories categories={categories} loading={loading} />
     </main>
   );
 };

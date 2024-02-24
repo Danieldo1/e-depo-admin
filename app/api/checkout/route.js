@@ -15,6 +15,7 @@ export async function POST(req) {
     address,
     country,
     products,
+    user,
   } = await req.json();
   await connectDB();
   const productQuantities = products.reduce((acc, productId) => {
@@ -48,6 +49,7 @@ export async function POST(req) {
     address,
     country,
     paid: false,
+    user: user,
   });
 
   const session = await stripe.checkout.sessions.create({

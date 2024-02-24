@@ -26,7 +26,7 @@ const CategoriesPage = () => {
       <h2 className="text-4xl font-bold text-gray-800">All Categories</h2>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {Array.from({ length: 15 }).map((_, index) => (
             <div
               key={index}
@@ -42,7 +42,7 @@ const CategoriesPage = () => {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {categories.map((category) => (
             <Link
               key={category._id}
@@ -57,7 +57,7 @@ const CategoriesPage = () => {
                     className="w-full h-full object-cover rounded-md"
                   />
                   <div className="absolute inset-0 z-30 bg-black opacity-30 rounded-md group-hover:opacity-50 transition-all delay-100 duration-300 ease-in"></div>
-                  <h3 className="text-3xl flex items-center z-40 justify-center font-bold text-center text-white capitalize absolute inset-0">
+                  <h3 className="text-xl md:text-3xl flex items-center z-40 justify-center font-bold text-center text-white capitalize absolute inset-0">
                     {category.name}
                   </h3>
                 </div>

@@ -80,7 +80,7 @@ const CartToggle = ({ showCart, setShowCart }) => {
         showCart ? "backdrop-blur z-40 " : ""
       }`}
     >
-      <aside className="fixed top-0 right-0 w-3/4 h-full flex flex-col justify-between gap-4 max-w-lg p-4 bg-[#f5f5f5] border border-gray-200 rounded-lg shadow sm:p-6 md:p-8  z-50 backdrop-blur ">
+      <aside className="fixed top-0 right-0 w-full h-full flex flex-col justify-between gap-4 max-w-lg p-4 bg-[#f5f5f5] border border-gray-200 rounded-lg shadow sm:p-6 md:p-8  z-50 backdrop-blur ">
         <h3 className="text-xl font-bold text-gray-900 ">Shopping Cart</h3>
         <div className="overflow-scroll h-full flex flex-col">
           {!cart?.length && (

@@ -100,7 +100,7 @@ const ProductPage = () => {
                 <SwiperSlide key={image} className="aspect-square">
                   <img
                     src={image}
-                    alt={item.title}
+                    alt={item.name}
                     className="w-full h-full object-contain rounded-md"
                   />
                 </SwiperSlide>

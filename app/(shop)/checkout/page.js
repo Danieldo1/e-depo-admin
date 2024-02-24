@@ -7,7 +7,7 @@ import Link from "next/link";
 import AllItems from "@/components/shop/AllItems";
 import { CountryDropdown } from "react-country-region-selector";
 import { z } from "zod";
-import {useSession} from "next-auth/react"
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const CartPage = () => {
@@ -27,10 +27,10 @@ const CartPage = () => {
 
   const router = useRouter();
 
-  if(!session){
+  if (!session) {
     router.push("/account");
-  } 
-
+  }
+  console.log(session);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -85,16 +85,16 @@ const CartPage = () => {
       termsAndConditions: document.getElementById("termsAndConditions").checked,
     };
     try {
-     formSchema.safeParse(formData);
-      
+      formSchema.safeParse(formData);
     } catch (err) {
-      const errorMessages = err.errors.map(error =>
-    translate(`validation_errors.type.${error.type}`, { givenType: typeof _.get(error.path, person) })
-  );
+      const errorMessages = err.errors.map((error) =>
+        translate(`validation_errors.type.${error.type}`, {
+          givenType: typeof _.get(error.path, person),
+        })
+      );
 
       console.log(errorMessages, "errorMessages");
     }
-
 
     if (!formSchema.safeParse(formData).success) {
       const errorMessages = formSchema
@@ -112,6 +112,7 @@ const CartPage = () => {
         address,
         country,
         products: cart,
+        user: session?.user?.email,
       };
       const response = await fetch("/api/checkout", {
         method: "POST",
@@ -145,13 +146,13 @@ const CartPage = () => {
   }
 
   return (
-    <main className=" flex flex-col overflow-hidden">
+    <main className=" flex flex-col overflow-clip">
       <h1 className="text-4xl font-bold bg-[#f5f5f5] px-5 text1 mt-3">
         Checkout
       </h1>
-      <div className="grid grid-cols-[1.3fr_1fr] md:gap-10 lg:gap-40   w-full h-full bg-[#f5f5f5] absolute">
+      <div className="grid sm:grid-cols-[1fr]  md:grid-cols-2 md:gap-10 lg:gap-40   w-full h-full bg-[#f5f5f5] absolute">
         <div className="bg-[#f5f5f5] rounded-bl-lg md:rounded-b-lg h-3/4">
-          <div className="p-5 flex flex-col gap-5 h-full overflow-scroll ">
+          <div className="p-5 flex flex-col gap-5 h-[calc(100vh-300px)] overflow-x-hidden ">
             <h3 className="text-xl font-bold">Cart Details</h3>
             {loading === false && cartItems.length > 0 && (
               <div className="flex flex-row justify-between uppercase text-gray-500 text-sm border-b pb-4">
@@ -199,7 +200,7 @@ const CartPage = () => {
                 {cartItems.map((item) => (
                   <div
                     key={item._id}
-                    className="border border-gray-200 rounded-lg p-4"
+                    className="border border-gray-500 bg-white rounded-lg p-4 scrollbar-hide flex flex-col gap-5"
                   >
                     <AllItems
                       item={item}
@@ -309,11 +310,21 @@ const CartPage = () => {
                       </Link>
                     </label>
                   </div>
+        
+                </div>
+                  <div className="flex items-start justify-between flex-col mt-10 md:hidden">
+                    <p>Total Items: {cart.length}</p>
+                    <p>Shipping: ${shipping}</p>
+                    <p>Subtotal: ${subtotal}</p>
+                    <h2 className="text-xl font-bold">
+                      Total: ${subtotal + shipping}
+                    </h2>
+          
                 </div>
                 {!cart.length > 0 ? (
                   <button
                     className={
-                      "bg-gray-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-gray-600 cursor-not-allowed"
+                      "bg-gray-500 mb-5 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-gray-600 cursor-not-allowed"
                     }
                     disabled
                   >
@@ -322,7 +333,7 @@ const CartPage = () => {
                 ) : (
                   <button
                     className={
-                      "bg-blue-500 relative z-50 mt-10 w-full justify-center text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
+                      "bg-blue-500 relative mb-5 z-50 mt-10 w-full justify-center text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                     }
                     type="submit"
                   >
@@ -336,7 +347,7 @@ const CartPage = () => {
       </div>
 
       {/* Total */}
-      <div className="p-5 bg-[#f5f5f5] text-black z-10  fixed bottom-0 w-full overflow-hidden">
+      <div className="p-5 bg-[#f5f5f5] text-black z-10 hidden md:block fixed bottom-0 w-full overflow-hidden">
         <div className="flex justify-between items-center ">
           <div className="flex flex-col">
             <p>Total Items: {cart.length}</p>

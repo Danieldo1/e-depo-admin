@@ -10,8 +10,8 @@ const AllItems = ({ item, addQuantity, removeQuantity, cart }) => {
       return text;
     }
   return (
-    <div className="flex items-center justify-between  ">
-      <div className="flex items-center space-x-4 ">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-4 w-1/2">
         <img
           src={item.images[0] || "/noimage.svg"}
           alt={item.name}
@@ -34,7 +34,7 @@ const AllItems = ({ item, addQuantity, removeQuantity, cart }) => {
           </p>
         </div>
       </div>
-      <div className="md:flex md:items-center md:space-x-4">
+      <div className="md:flex md:items-center md:space-x-4 max-w-[30%]">
         <button
           onClick={() => removeQuantity(item._id)}
           className="bg-gray-200 p-1 md:p-2 rounded hover:bg-gray-300"
@@ -51,7 +51,7 @@ const AllItems = ({ item, addQuantity, removeQuantity, cart }) => {
           <Plus className="w-4 h-4" />
         </button>
       </div>
-      <div className="text-center">
+      <div className="text-center w-1/4">
         <p className="text-base font-bold">
           $ {cart.filter((id) => id === item._id).length * item.price}
         </p>
