@@ -8,7 +8,7 @@ import AllItems from "@/components/shop/AllItems";
 import { CountryDropdown } from "react-country-region-selector";
 import { z } from "zod";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const { cart, setCart, addToCart, removeProduct, clearCart } =
@@ -68,7 +68,7 @@ const [formData, setFormData] = useState({
         const responseData = await response.json();
 
         if (responseData.url && responseData.url.length > 0) {
-          router.replace(responseData.url);
+          window.location.href = responseData.url;
         } else {
           console.error("Stripe URL not found in the response.");
         }

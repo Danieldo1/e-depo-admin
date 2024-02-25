@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/connectDB";
 import { Order } from "@/lib/models/Order";
 import { Product } from "@/lib/models/Product";
 import Stripe from "stripe";
+import { NextResponse } from "next/server";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
@@ -68,5 +69,7 @@ export async function POST(req) {
     customer_email: email,
   });
   
-  return Response.json({ url: session.url });
+  return new NextResponse(JSON.stringify({ url: session.url }), {
+    status: 200,
+  });
 }
