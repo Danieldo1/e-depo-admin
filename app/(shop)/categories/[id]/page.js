@@ -115,7 +115,8 @@ const CategoryPageOne = () => {
         </div>
       ) : (
         <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
-          Products in <span className="capitalize">"{catName.name}"</span>{" "}
+          Products in{" "}
+          <span className="capitalize">&quot;{catName.name}&quot;</span>{" "}
         </h2>
       )}
       {loading ? (

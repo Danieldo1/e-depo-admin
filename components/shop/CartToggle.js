@@ -11,35 +11,38 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const CartToggle = ({ showCart, setShowCart }) => {
-  if (!showCart) return null;
-
+  
   const { cart, setCart, addToCart, removeProduct } = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data: session } = useSession();
+  
+  if (!showCart) return null;
 
   useEffect(() => {
+    // Define the fetchProducts function inside the useEffect
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/cart?ids=${cart.join(",")}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCartItems(data);
+        } else {
+          console.error("Failed to fetch products");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (cart.length > 0) {
       fetchProducts();
     }
   }, [cart]);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/cart?ids=${cart.join(",")}`);
-      if (response.ok) {
-        const data = await response.json();
-        setCartItems(data);
-        setLoading(false);
-      } else {
-        console.error("Failed to fetch products");
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
 
   const handleCheckoutClick = () => {
     setShowCart(false);
