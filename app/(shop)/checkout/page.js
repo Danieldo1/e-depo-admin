@@ -121,7 +121,7 @@ const [formData, setFormData] = useState({
       zip: zip,
       address: address,
       country: country,
-      termsAndConditions: document.getElementById("termsAndConditions").checked,
+   //   termsAndConditions: document.getElementById("termsAndConditions").checked,
     };
     try {
       formSchema.safeParse(formData);
@@ -139,7 +139,9 @@ const [formData, setFormData] = useState({
       const errorMessages = formSchema
         .safeParse(formData)
         .error.errors.map((error) => error.message);
-      alert(errorMessages);
+      // alert(errorMessages);
+
+      console.log(errorMessages, "errorMessages");
     } else {
       const data = {
         firstName,
@@ -338,16 +340,14 @@ const [formData, setFormData] = useState({
                       </Link>
                     </label>
                   </div>
-        
                 </div>
-                  <div className="flex items-start justify-between flex-col mt-10 md:hidden">
-                    <p>Total Items: {cart.length}</p>
-                    <p>Shipping: ${shipping}</p>
-                    <p>Subtotal: ${subtotal}</p>
-                    <h2 className="text-xl font-bold">
-                      Total: ${subtotal + shipping}
-                    </h2>
-          
+                <div className="flex items-start justify-between flex-col mt-10 md:hidden">
+                  <p>Total Items: {cart.length}</p>
+                  <p>Shipping: ${shipping}</p>
+                  <p>Subtotal: ${subtotal}</p>
+                  <h2 className="text-xl font-bold">
+                    Total: ${subtotal + shipping}
+                  </h2>
                 </div>
                 {!cart.length > 0 ? (
                   <button
@@ -373,6 +373,42 @@ const [formData, setFormData] = useState({
           </div>
         )}
       </div>
+      {pay && (
+        <div
+          className=" inset-0 bg-gray-600 bg-opacity-50  overflow-y-auto h-full w-full"
+          
+        >
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            {/* Modal content */}
+            <div className="mt-3 text-center">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                {/* Modal header */}
+                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  Payment
+                </h3>
+              </div>
+              <div className="mt-2 px-7 py-3">
+                {/* Modal body */}
+                <p className="text-sm text-gray-500">
+                  Click the button to proceed with your payment.
+                </p>
+              </div>
+              <div className="items-center px-4 py-3">
+                {/* Modal footer */}
+                <button
+                  id="ok-btn"
+                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                 
+                >
+                  <Link href={link}>
+                  Pay Now
+                  </Link>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Total */}
       <div className="p-5 bg-[#f5f5f5] text-black z-10 hidden md:block fixed bottom-0 w-full overflow-hidden">
