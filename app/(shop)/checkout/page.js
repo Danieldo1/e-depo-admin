@@ -122,11 +122,9 @@ const CartPage = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-      if (responseData.url) {
-        //console.log("Stripe URL:", responseData.url);
-        if(typeof window !== "undefined") {
-          window.location.href = responseData.url;
-        }
+      console.log(responseData, "responseData");
+      if (responseData.url.length > 0) {
+       router.replace(responseData.url);
       } else {
         console.error("Stripe URL not found in the response.");
       }
