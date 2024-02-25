@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Loader2, Heart } from "lucide-react";
 import Link from "next/link";
-
+import { CartContext } from "@/components/shop/CartWrapper";
 const AccountPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -14,7 +14,7 @@ const AccountPage = () => {
   const [products, setProducts] = useState([]);
   const [showWishList, setShowWishList] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
-
+  const { cart, setCart, useCart } = useContext(CartContext);
   const [likedProducts, setLikedProducts] = useState(null || {});
   const [wishList, setWishList] = useState([]);
   const [orders, setOrders] = useState([]);

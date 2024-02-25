@@ -9,7 +9,7 @@ const Hero = () => {
           <h2 className="text-5xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
           </h2>
-          <p className="text-gray-600 text-lg font-base mt-40">
+          <p className="text-gray-600 text-lg font-medium mt-40">
             Pet Plus is your one-stop shop for all your pet needs. From food and
             toys to grooming and accessories, we have everything you need to
             keep your furry friend happy and healthy. Visit us today and see why
@@ -18,12 +18,11 @@ const Hero = () => {
               Shop All
             </button>
           </p>
-          <div className="flex gap-4 mt-5 justify-start">
-          </div> 
+          <div className="flex gap-4 mt-5 justify-start"></div>
         </div>
       </div>
 
-      <div className="hidden md:flex md:flex-col justify-evenly -mr-40  z-10  rounded-lg h-[50vh]">
+      <div className="hidden md:flex md:flex-col justify-evenly -mr-28  z-10  rounded-lg h-[50vh]">
         <div className="bg-gradient-to-r from-[#fafafa] via-[#fafafa] to-transparent w-full h-full">
           <h2 className="text-3xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
@@ -42,12 +41,12 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex mt-10 md:mt-0 relative justify-center object-cover w-full h-[300px] rounded-md md:h-[500px] ">
+      <div className="flex mt-10 md:mt-0 relative justify-center object-cover  md:object-contain w-full h-[300px] rounded-md md:h-[500px] lg:h-[600px] xl:h-[700px] ">
         <Image
-          src="/dogHero.webp"
+          src="/pet_plus.png"
           alt="hero"
           fill
-          className="object-cover w-full h-[300px] rounded-md md:h-[500px] "
+          className="object-fit md:object-contain w-full h-[300px] rounded-md md:h-[500px] lg:h-[600px] xl:h-[700px]"
         />
       </div>
     </div>

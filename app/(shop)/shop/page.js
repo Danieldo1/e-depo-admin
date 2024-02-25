@@ -24,8 +24,10 @@ const ShopPage = () => {
   }, []);
 
   useEffect(() => {
-    setSortedProducts(sortProducts());
-  }, [sortOption, products]);
+    const sortedAndFilteredProducts = sortProducts(filteredProducts);
+    setSortedProducts(sortedAndFilteredProducts);
+  }, [sortOption, products, filter]);
+
 
   useEffect(() => {
     fetchLikedProducts();
@@ -95,29 +97,30 @@ const ShopPage = () => {
     });
   };
 
-  const sortProducts = () => {
-    return [...products].sort((a, b) => {
-      let comparison = 0;
-      switch (sortOption) {
-        case "default":
-          comparison = products;
-          break;
-        case "price_asc":
-          comparison = a.price - b.price;
-          break;
-        case "price_desc":
-          comparison = b.price - a.price;
-          break;
-        case "title_asc":
-          comparison = a.title.localeCompare(b.title);
-          break;
-        case "title_desc":
-          comparison = b.title.localeCompare(a.title);
-          break;
-      }
-      return comparison;
-    });
-  };
+  const sortProducts = (productsToSort) => {
+  // Use the passed parameter productsToSort instead of the global products state
+  return [...productsToSort].sort((a, b) => {
+    let comparison = 0;
+    switch (sortOption) {
+      case "price_asc":
+        comparison = a.price - b.price;
+        break;
+      case "price_desc":
+        comparison = b.price - a.price;
+        break;
+      case "title_asc":
+        comparison = a.title.localeCompare(b.title);
+        break;
+      case "title_desc":
+        comparison = b.title.localeCompare(a.title);
+        break;
+      default:
+        // If no sorting option is selected, don't change the order
+        break;
+    }
+    return comparison;
+  });
+};
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(filter.toLowerCase())
@@ -192,7 +195,7 @@ const ShopPage = () => {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4">
-          {filteredProducts.map((product) => (
+          {sortedProducts.map((product) => (
             <div
               key={product._id}
               className="w-full h-full cursor-pointer  shrink-0  hover:scale-105 transition-all delay-100 duration-300 ease-in"

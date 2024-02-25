@@ -4,6 +4,9 @@ import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CartContext } from "@/components/shop/CartWrapper";
+import {Heart} from "lucide-react"
+import { useSession } from "next-auth/react";
+
 
 const CategoryPageOne = () => {
   const [loading, setLoading] = useState(true);
@@ -12,11 +15,32 @@ const CategoryPageOne = () => {
   const pathname = usePathname();
   const id = pathname.split("/")[2];
   const { cart, setCart, useCart } = useContext(CartContext);
+  const [likedProducts, setLikedProducts] = useState(null || {});
+  const [wishList, setWishList] = useState([]);
+  const { data: session } = useSession();
 
   useEffect(() => {
     categoryProducts();
     categoryName();
   }, []);
+
+    useEffect(() => {
+      fetchLikedProducts();
+    }, [session?.user?.email, likedProducts]);
+
+    const fetchLikedProducts = async () => {
+      try {
+        await fetch(`/api/wishlist?email=${session?.user?.email}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data[0] && Array.isArray(data[0].whishList)) {
+              setWishList(data[0].whishList);
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   const categoryProducts = async () => {
     await fetch(`/api/categoriesProducts?id=${id}`).then((response) => {
@@ -26,7 +50,47 @@ const CategoryPageOne = () => {
       });
     });
   };
+const handleLikeClick = (e, productId) => {
+  e.preventDefault();
+  if (session) {
+    handleLike(productId);
+  } else {
+    router.push("/login");
+  }
+};
+const handleLike = async (productId) => {
+  const isLiked = likedProducts ? likedProducts[productId] : false;
+  const method = isLiked ? "DELETE" : "POST";
 
+  try {
+    const response = await fetch("/api/wishlist", {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: session?.user?.email, productId }),
+    });
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+    setLikedProducts((prevLiked) => ({
+      ...prevLiked,
+      [productId]: !isLiked,
+    }));
+
+    // Update wishList state if the product is unliked
+    if (isLiked) {
+      setWishList((prevWishList) =>
+        prevWishList.filter((id) => id !== productId)
+      );
+    } else {
+      // If the product is liked, add it to the wishList state
+      setWishList((prevWishList) => [...prevWishList, productId]);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
   const categoryName = async () => {
     await fetch(`/api/shopCategories/byID?id=${id}`).then((response) => {
       response.json().then((data) => {
@@ -52,8 +116,7 @@ const CategoryPageOne = () => {
         </div>
       ) : (
         <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
-          Products in{" "}
-          <span className="capitalize">"{catName.name}"</span>{" "}
+          Products in <span className="capitalize">"{catName.name}"</span>{" "}
         </h2>
       )}
       {loading ? (
@@ -84,8 +147,21 @@ const CategoryPageOne = () => {
             >
               <Link
                 href={`/product/${product._id}`}
-                className="border p-4 rounded-md bg-gray-100 flex flex-col h-[370px] "
+                className="border p-4 rounded-md bg-gray-100 flex relative flex-col h-[370px] "
               >
+                <button
+                  onClick={(e) => handleLikeClick(e, product._id)}
+                  className="h-6 absolute top-0 right-0 z-30"
+                >
+                  <Heart
+                    className={
+                      wishList.includes(product._id)
+                        ? "text-red-500"
+                        : "text-gray-900"
+                    }
+                    fill={wishList.includes(product._id) ? "red" : "none"}
+                  />
+                </button>
                 <h3 className="text-lg font-bold">
                   {truncateDescription(product.title || "")}
                 </h3>

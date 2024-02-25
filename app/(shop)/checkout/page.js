@@ -13,17 +13,17 @@ import { useRouter } from "next/navigation";
 const CartPage = () => {
   const { cart, setCart, useCart, removeProduct, clearCart } =
     useContext(CartContext);
+    const { data: session } = useSession();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(session?.user?.email || "");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
-  const { data: session } = useSession();
 
   const router = useRouter();
 
