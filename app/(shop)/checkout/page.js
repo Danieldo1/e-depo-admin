@@ -25,6 +25,8 @@ const CartPage = () => {
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
   const [submitForm, setSubmitForm] = useState(false);
+  const [link, setLink] = useState("");
+  const [pay, setPay] = useState(false);
 const [formData, setFormData] = useState({
   firstName: "",
   lastName: "",
@@ -56,32 +58,25 @@ const [formData, setFormData] = useState({
   useEffect(() => {
     if (!submitForm) return;
 
-    const submitData = async () => {
-      try {
-        const response = await fetch("/api/checkout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-        const responseData = await response.json();
-
-        if (responseData.url && responseData.url.length > 0) {
-          window.location.href = responseData.url;
-        } else {
-          console.error("Stripe URL not found in the response.");
-        }
-      } catch (error) {
-        // Handle errors here
-        console.error("Error submitting data", error);
-      }
-    };
-
-    submitData();
-    // Reset the submission flag
+    
+    submitData()
+    
     setSubmitForm(false);
   }, [submitForm, formData]);
+  const submitData = async () => {
+   
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const responseData = await response.json();
+
+     setLink(responseData.url);
+     setPay(true);
+  };
 
   const fetchProducts = async () => {
     try {

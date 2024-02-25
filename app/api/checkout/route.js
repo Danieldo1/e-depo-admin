@@ -67,9 +67,8 @@ export async function POST(req) {
       orderId: orderRes._id.toString(),
     },
     customer_email: email,
-    return_url: `${process.env.NEXTAUTH_URL}/success`,
+
   });
-  
   return new NextResponse(JSON.stringify({ url: session.url }), {
     status: 200,
   });
