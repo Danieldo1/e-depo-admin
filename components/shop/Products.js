@@ -67,11 +67,12 @@ const Products = ({ products, loading, showNew }) => {
                   ${product.price || "0.00"}
                 </p>
                 <button
-                  type="button"
-                  onClick={() => useCart(product._id)}
+                 
                   className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                 >
-                  Quick Add
+                  <Link href={`/product/${product._id}`}>
+                  View
+                  </Link>
                 </button>
               </div>
             </Link>

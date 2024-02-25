@@ -45,6 +45,7 @@ const OrdersPage = () => {
 
             return (
               <Link
+                key={order._id}
                 href={`/orders/${order._id}`}
                 className={`flex my-2 gap-4 p-2  justify-between items-center rounded-md ${order.fulfilled ? "bg-green-50 hover:bg-green-100 " : "bg-red-50 hover:bg-red-100"} `}
               >
