@@ -24,6 +24,19 @@ const CartPage = () => {
   const [zip, setZip] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
+  const [submitForm, setSubmitForm] = useState(false);
+const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  city: "",
+  zip: "",
+  address: "",
+  country: "",
+  termsAndConditions: false,
+});
+
 
   const router = useRouter();
 
@@ -39,6 +52,37 @@ const CartPage = () => {
       setCartItems([]);
     }
   }, [cart]);
+
+  useEffect(() => {
+    if (!submitForm) return;
+
+    const submitData = async () => {
+      try {
+        const response = await fetch("/api/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const responseData = await response.json();
+
+        if (responseData.url && responseData.url.length > 0) {
+          router.replace(responseData.url);
+        } else {
+          console.error("Stripe URL not found in the response.");
+        }
+      } catch (error) {
+        // Handle errors here
+        console.error("Error submitting data", error);
+      }
+    };
+
+    submitData();
+    // Reset the submission flag
+    setSubmitForm(false);
+  }, [submitForm, formData]);
+  
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -114,20 +158,8 @@ const CartPage = () => {
         products: cart,
         user: session?.user?.email,
       };
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
-      console.log(responseData, "responseData");
-      if (responseData.url.length > 0) {
-       router.replace(responseData.url);
-      } else {
-        console.error("Stripe URL not found in the response.");
-      }
+      setFormData(data);
+      setSubmitForm(true);
     }
   };
 
