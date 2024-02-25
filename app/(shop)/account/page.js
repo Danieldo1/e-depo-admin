@@ -14,7 +14,7 @@ const AccountPage = () => {
   const [products, setProducts] = useState([]);
   const [showWishList, setShowWishList] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
-  const { cart, setCart, useCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(CartContext);
   const [likedProducts, setLikedProducts] = useState(null || {});
   const [wishList, setWishList] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -154,8 +154,12 @@ const AccountPage = () => {
               Welcome, {userInfo && userInfo.email.split("@")[0]}
             </h2>
             {/* <p>This is you personal account page </p> */}
-            <p className="text-lg mt-2 ">Your email is: {userInfo && userInfo.email}</p>
-            <p className="text-base mt-2">Here you can find all your orders and wishlists </p>
+            <p className="text-lg mt-2 ">
+              Your email is: {userInfo && userInfo.email}
+            </p>
+            <p className="text-base mt-2">
+              Here you can find all your orders and wishlists{" "}
+            </p>
           </div>
           <button
             onClick={() => signOut()}
@@ -263,10 +267,9 @@ const AccountPage = () => {
                       </p>
                       <button
                         type="button"
-                        onClick={() => useCart(product._id)}
                         className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                       >
-                        Quick Add
+                        <Link href={`/product/${product._id}`}>View</Link>
                       </button>
                     </div>
                   </Link>

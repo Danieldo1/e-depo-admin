@@ -15,7 +15,7 @@ const ShopPage = () => {
   const [sortedProducts, setSortedProducts] = useState([]);
   const [likedProducts, setLikedProducts] = useState(null || {});
   const [wishList, setWishList] = useState([]);
-  const { cart, setCart, useCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(CartContext);
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -27,7 +27,6 @@ const ShopPage = () => {
     const sortedAndFilteredProducts = sortProducts(filteredProducts);
     setSortedProducts(sortedAndFilteredProducts);
   }, [sortOption, products, filter]);
-
 
   useEffect(() => {
     fetchLikedProducts();
@@ -98,29 +97,29 @@ const ShopPage = () => {
   };
 
   const sortProducts = (productsToSort) => {
-  // Use the passed parameter productsToSort instead of the global products state
-  return [...productsToSort].sort((a, b) => {
-    let comparison = 0;
-    switch (sortOption) {
-      case "price_asc":
-        comparison = a.price - b.price;
-        break;
-      case "price_desc":
-        comparison = b.price - a.price;
-        break;
-      case "title_asc":
-        comparison = a.title.localeCompare(b.title);
-        break;
-      case "title_desc":
-        comparison = b.title.localeCompare(a.title);
-        break;
-      default:
-        // If no sorting option is selected, don't change the order
-        break;
-    }
-    return comparison;
-  });
-};
+    // Use the passed parameter productsToSort instead of the global products state
+    return [...productsToSort].sort((a, b) => {
+      let comparison = 0;
+      switch (sortOption) {
+        case "price_asc":
+          comparison = a.price - b.price;
+          break;
+        case "price_desc":
+          comparison = b.price - a.price;
+          break;
+        case "title_asc":
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case "title_desc":
+          comparison = b.title.localeCompare(a.title);
+          break;
+        default:
+          // If no sorting option is selected, don't change the order
+          break;
+      }
+      return comparison;
+    });
+  };
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(filter.toLowerCase())
@@ -247,7 +246,7 @@ const ShopPage = () => {
                   </p>
                   <button
                     type="button"
-                    onClick={() => useCart(product._id)}
+                    onClick={() => addToCart(product._id)}
                     className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                   >
                     Quick Add

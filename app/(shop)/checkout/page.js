@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const CartPage = () => {
-  const { cart, setCart, useCart, removeProduct, clearCart } =
+  const { cart, setCart, addToCart, removeProduct, clearCart } =
     useContext(CartContext);
     const { data: session } = useSession();
   const [cartItems, setCartItems] = useState([]);
@@ -131,7 +131,7 @@ const CartPage = () => {
   };
 
   const addQuantity = (id) => {
-    useCart(id);
+    addToCart(id);
   };
 
   const removeQuantity = (id) => {

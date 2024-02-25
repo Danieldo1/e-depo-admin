@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 const CartToggle = ({ showCart, setShowCart }) => {
   if (!showCart) return null;
 
-  const { cart, setCart, useCart, removeProduct } = useContext(CartContext);
+  const { cart, setCart, addToCart, removeProduct } = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -45,15 +45,18 @@ const CartToggle = ({ showCart, setShowCart }) => {
     setShowCart(false);
     if (session !== null) {
       router.push("/checkout");
-    } else if(!session || !session.user || !session.user.email || session === null) {
+    } else if (
+      !session ||
+      !session.user ||
+      !session.user.email ||
+      session === null
+    ) {
       router.push("/account");
     }
   };
 
-
-
   const addQuantity = (id) => {
-    useCart(id);
+    addToCart(id);
   };
 
   const removeQuantity = (id) => {

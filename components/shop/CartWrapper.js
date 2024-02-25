@@ -28,9 +28,9 @@ const CartWrapper = ({ children }) => {
     }
   }, [cart, ls]);
 
-  const useCart = (productId) => {
-    setCart((prevCart) => [...prevCart, productId]);
-  };
+ const addToCart = (productId) => {
+   setCart((prevCart) => [...prevCart, productId]);
+ };
 
 const removeProduct = (productId) => {
   setCart((prev) => {
@@ -51,7 +51,7 @@ const removeProduct = (productId) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, setCart, useCart, removeProduct, clearCart }}
+      value={{ cart, setCart, addToCart, removeProduct, clearCart }}
     >
       {children}
     </CartContext.Provider>

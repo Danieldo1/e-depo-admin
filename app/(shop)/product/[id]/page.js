@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 const ProductPage = () => {
-  const { cart, setCart, useCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(CartContext);
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(null);
@@ -82,7 +82,7 @@ const ProductPage = () => {
                 / {value || ""} /{" "}
               </p>
             ) : (
-              <p>{value || ""}</p>
+              <p key={key}>{value || ""}</p>
             )
           )}
       </div>
@@ -207,7 +207,7 @@ const ProductPage = () => {
           <button
             type="button"
             onClick={() => {
-              useCart(item._id);
+              addToCart(item._id);
               setShowCart(true);
             }}
             className="bg-blue-500 text-white font-semibold text-xl md:text-lg px-4 py-4 rounded-lg items-center flex gap-2 hover:bg-blue-600 w-full  justify-center"

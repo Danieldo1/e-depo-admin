@@ -4,9 +4,8 @@ import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CartContext } from "@/components/shop/CartWrapper";
-import {Heart} from "lucide-react"
+import { Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
-
 
 const CategoryPageOne = () => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,7 @@ const CategoryPageOne = () => {
   const [catName, setCatName] = useState("");
   const pathname = usePathname();
   const id = pathname.split("/")[2];
-  const { cart, setCart, useCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(CartContext);
   const [likedProducts, setLikedProducts] = useState(null || {});
   const [wishList, setWishList] = useState([]);
   const { data: session } = useSession();
@@ -24,23 +23,23 @@ const CategoryPageOne = () => {
     categoryName();
   }, []);
 
-    useEffect(() => {
-      fetchLikedProducts();
-    }, [session?.user?.email, likedProducts]);
+  useEffect(() => {
+    fetchLikedProducts();
+  }, [session?.user?.email, likedProducts]);
 
-    const fetchLikedProducts = async () => {
-      try {
-        await fetch(`/api/wishlist?email=${session?.user?.email}`)
-          .then((res) => res.json())
-          .then((data) => {
-            if (data[0] && Array.isArray(data[0].whishList)) {
-              setWishList(data[0].whishList);
-            }
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchLikedProducts = async () => {
+    try {
+      await fetch(`/api/wishlist?email=${session?.user?.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data[0] && Array.isArray(data[0].whishList)) {
+            setWishList(data[0].whishList);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const categoryProducts = async () => {
     await fetch(`/api/categoriesProducts?id=${id}`).then((response) => {
@@ -50,47 +49,47 @@ const CategoryPageOne = () => {
       });
     });
   };
-const handleLikeClick = (e, productId) => {
-  e.preventDefault();
-  if (session) {
-    handleLike(productId);
-  } else {
-    router.push("/login");
-  }
-};
-const handleLike = async (productId) => {
-  const isLiked = likedProducts ? likedProducts[productId] : false;
-  const method = isLiked ? "DELETE" : "POST";
-
-  try {
-    const response = await fetch("/api/wishlist", {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: session?.user?.email, productId }),
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-    setLikedProducts((prevLiked) => ({
-      ...prevLiked,
-      [productId]: !isLiked,
-    }));
-
-    // Update wishList state if the product is unliked
-    if (isLiked) {
-      setWishList((prevWishList) =>
-        prevWishList.filter((id) => id !== productId)
-      );
+  const handleLikeClick = (e, productId) => {
+    e.preventDefault();
+    if (session) {
+      handleLike(productId);
     } else {
-      // If the product is liked, add it to the wishList state
-      setWishList((prevWishList) => [...prevWishList, productId]);
+      router.push("/login");
     }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+  };
+  const handleLike = async (productId) => {
+    const isLiked = likedProducts ? likedProducts[productId] : false;
+    const method = isLiked ? "DELETE" : "POST";
+
+    try {
+      const response = await fetch("/api/wishlist", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: session?.user?.email, productId }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      setLikedProducts((prevLiked) => ({
+        ...prevLiked,
+        [productId]: !isLiked,
+      }));
+
+      // Update wishList state if the product is unliked
+      if (isLiked) {
+        setWishList((prevWishList) =>
+          prevWishList.filter((id) => id !== productId)
+        );
+      } else {
+        // If the product is liked, add it to the wishList state
+        setWishList((prevWishList) => [...prevWishList, productId]);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const categoryName = async () => {
     await fetch(`/api/shopCategories/byID?id=${id}`).then((response) => {
       response.json().then((data) => {
@@ -192,10 +191,9 @@ const handleLike = async (productId) => {
                   </p>
                   <button
                     type="button"
-                    onClick={() => useCart(product._id)}
                     className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
                   >
-                    Quick Add
+                    <Link href={`/product/${product._id}`}>View</Link>
                   </button>
                 </div>
               </Link>

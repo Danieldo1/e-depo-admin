@@ -1,16 +1,16 @@
-'use client';
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/components/shop/CartWrapper";
 
 const PaymentSuccess = () => {
-  const { cart, setCart, useCart, removeProduct, clearCart } =
+  const { cart, setCart, addToCart, removeProduct, clearCart } =
     useContext(CartContext);
 
-    useEffect(() => {
-      clearCart();
-    }, []);
+  useEffect(() => {
+    clearCart();
+  }, []);
   return (
     <div className="min-h-screen bg-[#f5f5f5] flex flex-col justify-start pt-24 items-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">

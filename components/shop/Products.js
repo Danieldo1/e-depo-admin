@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CartContext } from "@/components/shop/CartWrapper";
 
 const Products = ({ products, loading, showNew }) => {
-  const { cart, setCart, useCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(CartContext);
   function truncateDescription(description) {
     const words = description.split(" ");
     if (words.length > 3) {
@@ -66,13 +66,8 @@ const Products = ({ products, loading, showNew }) => {
                 <p className="text-lg font-semibold text-gray-800 mt-2 text-end">
                   ${product.price || "0.00"}
                 </p>
-                <button
-                 
-                  className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
-                >
-                  <Link href={`/product/${product._id}`}>
-                  View
-                  </Link>
+                <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600">
+                  <Link href={`/product/${product._id}`}>View</Link>
                 </button>
               </div>
             </Link>
