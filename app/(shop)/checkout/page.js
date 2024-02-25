@@ -8,7 +8,7 @@ import AllItems from "@/components/shop/AllItems";
 import { CountryDropdown } from "react-country-region-selector";
 import { z } from "zod";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const CartPage = () => {
   const { cart, setCart, addToCart, removeProduct, clearCart } =
@@ -82,7 +82,7 @@ const [formData, setFormData] = useState({
     // Reset the submission flag
     setSubmitForm(false);
   }, [submitForm, formData]);
-  
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
