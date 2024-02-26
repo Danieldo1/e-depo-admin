@@ -59,7 +59,7 @@ The result is a fully realized e-commerce platform that stands out in the digita
 
 ### E-commerce Front
 
-<img src="/public/screenshots/user/ss1.png" width="400" height="200"/> <img src="/public/screenshots/user/ss2.png" width="400" height="200"/> <img src="/public/screenshots/user/ss3.png" width="400" height="200"/> <img src="/public/screenshots/user/ss4.png" width="400" height="200"/> 
+<img src="/public/screenshots/user/ss1.png" width="400" /> <img src="/public/screenshots/user/ss2.png" width="400" height="200"/> <img src="/public/screenshots/user/ss3.png" width="400" height="200"/> <img src="/public/screenshots/user/ss4.png" width="400" height="200"/> 
 
 
 
