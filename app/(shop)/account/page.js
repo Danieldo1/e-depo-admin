@@ -169,6 +169,7 @@ try {
               Welcome, {userInfo && userInfo.email.split("@")[0]}
             </h2>
             {JSON.stringify(session?.user)}
+            {JSON.stringify(userInfo)}
             {/* <p>This is you personal account page </p> */}
             <p className="text-lg mt-2 ">
               Your email is: {userInfo && userInfo.email}
