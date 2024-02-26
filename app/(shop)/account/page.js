@@ -19,8 +19,8 @@ const AccountPage = () => {
   const [wishList, setWishList] = useState([]);
   const [orders, setOrders] = useState([]);
 
+  const email = session?.user?.email;
   useEffect(() => {
-    const email = session?.user?.email;
     if (email) {
       fetchUser(email);
     }
