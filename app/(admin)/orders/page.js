@@ -13,7 +13,7 @@ const OrdersPage = () => {
   }, []);
 
   const fetchOrders = async () => {
-    await fetch("/api/orders").then((response) => {
+    await fetch("/api/orders",{cache:"no-store"}).then((response) => {
       response.json().then((data) => {
         setOrders(data);
       });
@@ -75,6 +75,7 @@ const OrdersPage = () => {
                   </span>
                 </div>
                 <div>
+                  {JSON.stringify(order.fulfilled)}
                   <p
                     className={
                       order.fulfilled ? "text-green-500" : "text-red-500"
