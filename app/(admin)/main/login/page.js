@@ -19,7 +19,7 @@ const LoginAdmin = () => {
           <div className="flex flex-col justify-start items-center h-full mt-24">
             <div className="flex gap-4">
               <button
-                onClick={() => signIn("google", { callbackUrl: `${process.env.NEXTAUTH_URL}/admin` })}
+                onClick={() => signIn("google", { callbackUrl: "/admin" })}
                 className="bg-blue-500 text-white p-4 rounded-lg items-center hover:bg-blue-600 text-xl"
               >
                 Login
