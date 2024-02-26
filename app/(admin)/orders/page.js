@@ -75,7 +75,6 @@ const OrdersPage = () => {
                   </span>
                 </div>
                 <div>
-                  {JSON.stringify(order.fulfilled)}
                   <p
                     className={
                       order.fulfilled ? "text-green-500" : "text-red-500"
