@@ -1,7 +1,9 @@
 "use client";
 
 import Layout from "@/components/Layout";
+import Sales from "@/components/Sales";
 import { useSession } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 
 
@@ -17,6 +19,7 @@ export default function Home() {
           className="w-10 h-10 rounded-full ml-4"
         />
       </div>
+      <Sales />
     </Layout>
   );
 }
