@@ -9,7 +9,7 @@ import { CartContext } from "@/components/shop/CartWrapper";
 const AccountPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState();
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [showWishList, setShowWishList] = useState(true);
@@ -73,7 +73,7 @@ const AccountPage = () => {
   const fetchUser = async (email) => {
 try {
   if (email) {
-    await fetch(`api/register?id=${email}`)
+     fetch(`api/register?id=${email}`)
       .then((res) => res.json())
       .then((data) => {
         if (data) {
