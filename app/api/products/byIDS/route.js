@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
     await connectDB();
-   const ids = req.url.split("=")[1].split(",");
+   const ids = decodeURIComponent(req.url.split("=")[1]).split(",");
+   console.log(ids, "ids");
    const products = await Product.find({ _id: { $in: ids } });
+   console.log(products, "products");
    return NextResponse.json(products);
 }

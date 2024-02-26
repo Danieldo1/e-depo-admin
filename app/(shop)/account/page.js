@@ -129,9 +129,10 @@ const AccountPage = () => {
 
   const fetchProducts = async () => {
     if (userInfo && userInfo?.whishList.length > 0) {
-      await fetch(`/api/products/byIDS?ids=${userInfo.whishList}`).then((res) =>
+      await fetch(`/api/products/byIDS?ids=${encodeURIComponent(userInfo?.whishList)}`).then((res) =>
         res.json().then((data) => {
           if (data) {
+            setLoading(true)
             setProducts(data);
             setLoading(false);
           }
@@ -167,8 +168,6 @@ const AccountPage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
               Welcome, {userInfo && userInfo.email.split("@")[0]}
             </h2>
-            {JSON.stringify(session?.user)}
-            {JSON.stringify(userInfo)}
             {/* <p>This is you personal account page </p> */}
             <p className="text-lg mt-2 ">
               Your email is: {userInfo && userInfo.email}
@@ -231,11 +230,12 @@ const AccountPage = () => {
               Wishlist
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4">
-              {products.map((product) => (
+              {loading===false &&  products.map((product) => (
                 <div
                   key={product._id}
                   className="w-full h-full cursor-pointer "
                 >
+                  {JSON.stringify(product)}
                   <Link
                     href={`/product/${product._id}`}
                     className="border p-4 rounded-md bg-gray-100 flex flex-col relative h-[370px] "
