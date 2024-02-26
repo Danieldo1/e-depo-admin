@@ -4,6 +4,9 @@ import Hero from "@/components/shop/Hero";
 import Products from "@/components/shop/Products";
 import React, { useEffect, useState } from "react";
 import Categories from "@/components/shop/Categories";
+import NewsletterSignUp from "@/components/shop/NewsletterSignUp";
+import CoreValues from "@/components/shop/CoreValues";
+import BlogCards from "@/components/shop/BlogCards";
 
 
 const ShopsPage = () => {
@@ -38,7 +41,10 @@ const categoryProducts = async () => {
       <Hero />
       <h1 className="text-4xl font-bold text-gray-800">New Products</h1>
       <Products products={products} loading={loading} showNew={showNew} />
+      <CoreValues />
       <Categories categories={categories} loading={loading} />
+      <BlogCards />
+      <NewsletterSignUp />
     </main>
   );
 };

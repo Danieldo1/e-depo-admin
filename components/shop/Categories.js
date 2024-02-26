@@ -17,14 +17,14 @@ const Categories = ({ categories, loading }) => {
           ))}
         </div>
       )}
-      <div className="flex overflow-x-auto scrollbar-hide p-7 gap-4 mt-4 ">
+      <div className="flex overflow-x-auto scrollbar-hide py-7  mt-4 ">
         {categories.length > 0 &&
           categories.map((category) => (
             <Link
               href={`/categories/${category._id}`}
               key={category._id}
 
-              className="min-w-[300px] flex flex-col shrink-0 justify-center items-center group"
+              className="min-w-[200px] md:min-w-[300px] flex flex-col shrink-0 justify-center items-center group"
             >
               <div className="rounded-full w-40 h-40 overflow-hidden group-hover:scale-105 transition-all delay-100 duration-300 ease-in">
                 <img

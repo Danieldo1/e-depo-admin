@@ -3,20 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Hero = () => {
-  
   return (
-    <div className="grid md:grid-cols-2 gap-5 w-full h-[60vh] md:h-[50vh] relative">
+    <div className="grid md:grid-cols-2 gap-5 w-full h-[60vh] md:h-[50vh] relative mb-10">
       <div className="md:hidden  absolute flex flex-col  z-10 h-full">
         <div className="bg-gradient-to-t from-[#fafafa] to-transparent w-full h-full flex justify-between flex-col">
-          <h2 className="text-5xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
+          <h2 className="text-3xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
           </h2>
-          <p className="text-gray-600 text-lg font-medium mt-40">
+          <p className="text-gray-600 text-lg font-semibold mt-56">
             Pet Plus is your one-stop shop for all your pet needs. From food and
             toys to grooming and accessories, we have everything you need to
             keep your furry friend happy and healthy. Visit us today and see why
             we&apos;re the best pet store in town!
-            <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600">
+            <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600 mt-5">
               <Link href={"/shop"}>Shop All</Link>
             </button>
           </p>
@@ -29,7 +28,7 @@ const Hero = () => {
           <h2 className="text-3xl text-gray-800 font-bold text1 md:text-4xl mb-2 lg:text-5xl">
             Welcome to PetPlus
           </h2>
-          <p className="text-gray-600 text-lg font-base">
+          <p className="text-gray-600 text-lg font-semibold ">
             Pet Plus is your one-stop shop for all your pet needs. From food and
             toys to grooming and accessories, we have everything you need to
             keep your furry friend happy and healthy. Visit us today and see why
@@ -43,12 +42,12 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex mt-10 md:mt-0 relative justify-center object-cover  md:object-contain w-full h-[300px] rounded-md md:h-[500px] lg:h-[600px] xl:h-[700px] ">
+      <div className="flex mt-10 md:mt-0 relative justify-center object-cover w-full h-[300px] rounded-md md:h-[500px] ">
         <Image
-          src="/pet_plus.png"
+          src="/dogHero.webp"
           alt="hero"
           fill
-          className="object-fit md:object-contain w-full h-[300px] rounded-md md:h-[500px] lg:h-[600px] xl:h-[700px]"
+          className="object-cover w-full h-[300px] rounded-md md:h-[500px] "
         />
       </div>
     </div>
