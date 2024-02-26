@@ -162,7 +162,7 @@ const AccountPage = () => {
 
   if (session) {
     return (
-      <div className="bg-[#fafafa] p-5 h-[calc(100vh-300px)] flex flex-col">
+      <div className="bg-[#fafafa] p-5  flex flex-col">
         <div className="flex justify-between items-start md:items-center flex-1">
           <div className="flex flex-col">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
@@ -235,7 +235,7 @@ const AccountPage = () => {
                   key={product._id}
                   className="w-full h-full cursor-pointer "
                 >
-                  {JSON.stringify(product)}
+                  
                   <Link
                     href={`/product/${product._id}`}
                     className="border p-4 rounded-md bg-gray-100 flex flex-col relative h-[370px] "
@@ -367,6 +367,7 @@ const AccountPage = () => {
       </div>
     );
   }
+if(!session){
 
   return (
     <div className="bg-[#fafafa] p-5 h-screen">
@@ -391,6 +392,7 @@ const AccountPage = () => {
       </div>
     </div>
   );
+}
 };
 
 export default AccountPage;
