@@ -74,8 +74,10 @@ if (email) {
     await fetch(`api/register?id=${email}`)
       .then((res) => res.json())
       .then((data) => {
-        setUserInfo(data[0]);
-        setLoading(false);
+        if (data) {
+          setUserInfo(data[0]);
+          setLoading(false);
+        }
       });
   }
   };
@@ -159,6 +161,7 @@ if (email) {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
               Welcome, {userInfo && userInfo.email.split("@")[0]}
             </h2>
+       
             {/* <p>This is you personal account page </p> */}
             <p className="text-lg mt-2 ">
               Your email is: {userInfo && userInfo.email}
