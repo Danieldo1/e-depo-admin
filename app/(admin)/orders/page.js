@@ -37,7 +37,8 @@ const OrdersPage = () => {
       <h1 className="heading">Orders Page</h1>
       <div>
         {currentOrders
-          .filter((order) => order.paid)
+          // .filter((order) => order.paid)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((order) => {
             const totalPrice = order.line_items.reduce((total, item) => {
               return total + item.price_data.unit_amount * item.quantity;
@@ -94,7 +95,7 @@ const OrdersPage = () => {
       
       <div className="flex justify-center gap-5 mt-3 overflow-x-auto">
         {pageNumbers
-          .filter((order) => order.paid)
+          // .filter((order) => order.paid)
           .map((number) => (
             <a
               key={number}

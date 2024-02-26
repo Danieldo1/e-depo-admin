@@ -18,21 +18,27 @@ const Navbar = ({ showMenu }) => {
   const inactiveLink =
     " hover:bg-stone-500 hover:text-black rounded-md p-2 flex gap-2";
   const activeLink = " bg-stone-500 text-black rounded-md p-2 flex gap-2";
-  
+
   return (
     <aside
       className={
         (showMenu === true
           ? "fixed bg-stone-900 h-full z-50 w-[60%]  "
-          : "hidden") + " md:flex flex-col p-5 text-white transition-all duration-300 ease-in-out  "
+          : "hidden") +
+        " md:flex flex-col p-5 text-white transition-all duration-300 ease-in-out  "
       }
     >
-      <Link href="/" className="flex gap-2 mb-4">
-        LOGO
+      <Link href="/admin" className="flex gap-2 mb-4">
+        <h2 className="text-2xl md:text-4xl font-bold text-white text1">
+          Pet<span className="text-red-500">Plus</span>+
+        </h2>
       </Link>
 
       <nav className="flex gap-2 flex-col font-semibold">
-        <Link href="/admin" className={pathname === "/" ? activeLink : inactiveLink}>
+        <Link
+          href="/admin"
+          className={pathname === "/" ? activeLink : inactiveLink}
+        >
           {" "}
           <LayoutDashboard />
           Dashboard
