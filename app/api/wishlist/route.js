@@ -24,7 +24,7 @@ export async function DELETE(req) {
 
 export async function GET(req) {
     await connectDB();
-    const email = req.url.split("/").pop().split("=").pop();
+    const email = decodeURIComponent(req.url.split("/").pop().split("=").pop());
     const users = await Person.find( { email: email });
     return Response.json(users);
 }

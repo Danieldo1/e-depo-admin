@@ -44,7 +44,7 @@ const AccountPage = () => {
 
   const fetchOrders = async () => {
     try {
-      await fetch(`/api/orders/byEmail?email=${session?.user?.email}`)
+      await fetch(`/api/orders/byEmail?email=${encodeURIComponent(session?.user?.email)}`)
         .then((res) => res.json())
         .then((data) => {
           setOrders(data);
@@ -57,7 +57,7 @@ const AccountPage = () => {
 
   const fetchLikedProducts = async () => {
     try {
-      await fetch(`/api/wishlist?email=${session?.user?.email}`)
+      await fetch(`/api/wishlist?email=${encodeURIComponent(session?.user?.email)}`)
         .then((res) => res.json())
         .then((data) => {
           if (data[0] && Array.isArray(data[0].whishList)) {
@@ -308,7 +308,7 @@ const AccountPage = () => {
               Past Orders
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-8 gap-4">
-              {orders.map((order) => (
+              {loading===false && orders.map((order) => (
                 <div
                   key={order._id}
                   className="border p-4 rounded-md bg-white flex flex-col"
