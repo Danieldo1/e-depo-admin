@@ -71,20 +71,19 @@ const AccountPage = () => {
   };
 
   const fetchUser = async (email) => {
-try {
-  if (email) {
-     fetch(`api/register?id=${email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setUserInfo(data[0]);
-          setLoading(false);
-        }
-      });
-  }
-} catch (error) {
-  console.log(error);
-}
+    if (email) {
+      fetch(`api/register?id=${encodeURIComponent(email)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            setUserInfo(data[0]);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Fetching user failed", error);
+        });
+    }
   };
   const handleLikeClick = (e, productId) => {
     e.preventDefault();
