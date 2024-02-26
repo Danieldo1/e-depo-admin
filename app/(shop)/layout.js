@@ -17,9 +17,9 @@ export const metadata = {
   description: "A genereic storefront for an e-commerce platform",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, session }) {
   return (
-    <SessionWrapper>
+    <SessionWrapper session={session} >
       <CartWrapper>
       <html lang="en">
         <body
