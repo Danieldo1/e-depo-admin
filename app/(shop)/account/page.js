@@ -20,7 +20,10 @@ const AccountPage = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetchUser(session?.user?.email);
+    const email = session?.user?.email;
+    if (email) {
+      fetchUser(email);
+    }
   }, [session]);
 
   useEffect(() => {
@@ -29,9 +32,10 @@ const AccountPage = () => {
     }
   }, [userInfo]);
   useEffect(() => {
-    fetchLikedProducts();
-  }, [session?.user?.email]);
-
+    if (userInfo) {
+      fetchLikedProducts();
+    }
+  }, [userInfo]);
   useEffect(() => {
     if (userInfo) {
       fetchOrders();
@@ -65,13 +69,15 @@ const AccountPage = () => {
     }
   };
 
-  const fetchUser = async () => {
-    await fetch(`api/register?id=${session?.user?.email}`)
+  const fetchUser = async (email) => {
+if (email) {
+    await fetch(`api/register?id=${email}`)
       .then((res) => res.json())
       .then((data) => {
         setUserInfo(data[0]);
         setLoading(false);
       });
+  }
   };
   const handleLikeClick = (e, productId) => {
     e.preventDefault();

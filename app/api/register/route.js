@@ -11,6 +11,6 @@ export async function POST(req) {
 export async function GET(req) {
   await connectDB();
   const email = req.url.split("/").pop().split("=").pop();
-  const users = await Person.find( { email: email });
+  const users = await Person.find({ email: email });
   return Response.json(users);
 }
