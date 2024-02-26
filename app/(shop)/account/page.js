@@ -166,12 +166,12 @@ try {
         <div className="flex justify-between items-start md:items-center flex-1">
           <div className="flex flex-col">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-              Welcome, {userInfo.email.split("@")[0]}
+              Welcome, {userInfo && userInfo.email.split("@")[0]}
             </h2>
-        {JSON.stringify(userInfo)}
+            {JSON.stringify(session?.user)}
             {/* <p>This is you personal account page </p> */}
             <p className="text-lg mt-2 ">
-              Your email is: {userInfo.email}
+              Your email is: {userInfo && userInfo.email}
             </p>
             <p className="text-base mt-2">
               Here you can find all your orders and wishlists{" "}
