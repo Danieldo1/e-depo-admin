@@ -48,6 +48,7 @@ const AccountPage = () => {
         .then((res) => res.json())
         .then((data) => {
           setOrders(data);
+          setLoading(false);
         });
     } catch (error) {
       console.log(error);
@@ -70,7 +71,8 @@ const AccountPage = () => {
   };
 
   const fetchUser = async (email) => {
-if (email) {
+try {
+  if (email) {
     await fetch(`api/register?id=${email}`)
       .then((res) => res.json())
       .then((data) => {
@@ -80,6 +82,9 @@ if (email) {
         }
       });
   }
+} catch (error) {
+  console.log(error);
+}
   };
   const handleLikeClick = (e, productId) => {
     e.preventDefault();
@@ -124,11 +129,13 @@ if (email) {
   };
 
   const fetchProducts = async () => {
-    if (userInfo?.whishList.length > 0) {
+    if (userInfo && userInfo?.whishList.length > 0) {
       await fetch(`/api/products/byIDS?ids=${userInfo.whishList}`).then((res) =>
         res.json().then((data) => {
-          setProducts(data);
-          setLoading(false);
+          if (data) {
+            setProducts(data);
+            setLoading(false);
+          }
         })
       );
     } else {
@@ -159,12 +166,12 @@ if (email) {
         <div className="flex justify-between items-start md:items-center flex-1">
           <div className="flex flex-col">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-              Welcome, {userInfo && userInfo.email.split("@")[0]}
+              Welcome, {userInfo.email.split("@")[0]}
             </h2>
-       
+        {JSON.stringify(userInfo)}
             {/* <p>This is you personal account page </p> */}
             <p className="text-lg mt-2 ">
-              Your email is: {userInfo && userInfo.email}
+              Your email is: {userInfo.email}
             </p>
             <p className="text-base mt-2">
               Here you can find all your orders and wishlists{" "}
