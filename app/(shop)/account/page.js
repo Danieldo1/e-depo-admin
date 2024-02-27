@@ -44,7 +44,9 @@ const AccountPage = () => {
 
   const fetchOrders = async () => {
     try {
-      await fetch(`/api/orders/byEmail?email=${encodeURIComponent(session?.user?.email)}`)
+      await fetch(
+        `/api/orders/byEmail?email=${encodeURIComponent(session?.user?.email)}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setOrders(data);
@@ -57,7 +59,9 @@ const AccountPage = () => {
 
   const fetchLikedProducts = async () => {
     try {
-      await fetch(`/api/wishlist?email=${encodeURIComponent(session?.user?.email)}`)
+      await fetch(
+        `/api/wishlist?email=${encodeURIComponent(session?.user?.email)}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data[0] && Array.isArray(data[0].whishList)) {
@@ -130,10 +134,12 @@ const AccountPage = () => {
 
   const fetchProducts = async () => {
     if (userInfo && userInfo?.whishList.length > 0) {
-      await fetch(`/api/products/byIDS?ids=${encodeURIComponent(userInfo?.whishList)}`).then((res) =>
+      await fetch(
+        `/api/products/byIDS?ids=${encodeURIComponent(userInfo?.whishList)}`
+      ).then((res) =>
         res.json().then((data) => {
           if (data) {
-            setLoading(true)
+            setLoading(true);
             setProducts(data);
             setLoading(false);
           }
@@ -231,67 +237,69 @@ const AccountPage = () => {
               Wishlist
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4">
-              {loading===false &&  products.map((product) => (
-                <div
-                  key={product._id}
-                  className="w-full h-full cursor-pointer "
-                >
-                  
-                  <Link
-                    href={`/product/${product._id}`}
-                    className="border p-4 rounded-md bg-gray-100 flex flex-col relative h-[370px] "
+              {loading === false &&
+                products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="w-full h-full cursor-pointer "
                   >
-                    <button
-                      onClick={(e) => handleLikeClick(e, product._id)}
-                      className="h-6 absolute top-0 right-0 z-30"
+                    <Link
+                      href={`/product/${product._id}`}
+                      className="border p-4 rounded-md bg-[#fff] flex flex-col relative h-[370px] "
                     >
-                      <Heart
-                        className={
-                          wishList.includes(product._id)
-                            ? "text-red-500"
-                            : "text-gray-900"
-                        }
-                        fill={wishList.includes(product._id) ? "red" : "none"}
-                      />
-                    </button>
-                    <h3 className="text-lg font-bold">
-                      {truncateDescription(product.title || "")}
-                    </h3>
-                    <p className="text-gray-600 text-sm flex items-center">
-                      {product.properties &&
-                        Object.keys(product.properties).map((key, index) => (
-                          <span key={index} className="text-gray-600 text-sm">
-                            <span className="font-bold capitalize">{key}</span>{" "}
-                            <span className="mx-1 capitalize">
-                              {product.properties[key]}
-                            </span>
-                          </span>
-                        ))}
-                    </p>
-                    <div className="flex justify-center items-center">
-                      <img
-                        src={product.images[0] || "/noimage.svg"}
-                        alt={product.title}
-                        className="w-full max-w-48 max-h-48 object-cover rounded-md my-2"
-                      />
-                    </div>
-                    <p className="text-gray-600 flex-grow overflow-hidden line-clamp-1">
-                      {truncateDescription(product.description) || ""}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <p className="text-lg font-semibold text-gray-800 mt-2 text-end">
-                        ${product.price || "0.00"}
-                      </p>
                       <button
-                        type="button"
-                        className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
+                        onClick={(e) => handleLikeClick(e, product._id)}
+                        className="h-6 absolute top-5 right-5 z-30"
                       >
-                        <Link href={`/product/${product._id}`}>View</Link>
+                        <Heart
+                          className={
+                            wishList.includes(product._id)
+                              ? "text-red-500 w-9 h-9"
+                              : "text-red-500 w-9 h-9"
+                          }
+                          fill={wishList.includes(product._id) ? "red" : "none"}
+                        />
                       </button>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                      <h3 className="text-lg font-bold">
+                        {truncateDescription(product.title || "")}
+                      </h3>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        {product.properties &&
+                          Object.keys(product.properties).map((key, index) => (
+                            <span key={index} className="text-gray-600 text-sm">
+                              <span className="font-bold capitalize">
+                                {key}
+                              </span>{" "}
+                              <span className="mx-1 capitalize">
+                                {product.properties[key]}
+                              </span>
+                            </span>
+                          ))}
+                      </p>
+                      <div className="flex justify-center items-center">
+                        <img
+                          src={product.images[0] || "/noimage.svg"}
+                          alt={product.title}
+                          className="w-full max-w-48 max-h-48 object-cover rounded-md my-2"
+                        />
+                      </div>
+                      <p className="text-gray-600 flex-grow overflow-hidden line-clamp-1">
+                        {truncateDescription(product.description) || ""}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <p className="text-lg font-semibold text-gray-800 mt-2 text-end">
+                          ${product.price || "0.00"}
+                        </p>
+                        <button
+                          type="button"
+                          className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg items-center flex gap-2 hover:bg-blue-600"
+                        >
+                          <Link href={`/product/${product._id}`}>View</Link>
+                        </button>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
             </div>
           </div>
         )}
@@ -309,51 +317,52 @@ const AccountPage = () => {
               Past Orders
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-8 gap-4">
-              {loading===false && orders.map((order) => (
-                <div
-                  key={order._id}
-                  className="border p-4 rounded-md bg-white flex flex-col"
-                >
-                  <div className="font-bold mb-4">Order ID: {order._id}</div>
-                  <div className="flex justify-between mb-4">
-                    <div>
-                      <div className="font-bold">Customer Information:</div>
+              {loading === false &&
+                orders.map((order) => (
+                  <div
+                    key={order._id}
+                    className="border p-4 rounded-md bg-white flex flex-col"
+                  >
+                    <div className="font-bold mb-4">Order ID: {order._id}</div>
+                    <div className="flex justify-between mb-4">
                       <div>
-                        Name: {order.firstName} {order.lastName}
+                        <div className="font-bold">Customer Information:</div>
+                        <div>
+                          Name: {order.firstName} {order.lastName}
+                        </div>
+                        <div>Email: {order.email}</div>
+                        <div>Phone: {order.phone}</div>
+                        <div>City: {order.city}</div>
+                        <div>Zip: {order.zip}</div>
+                        <div>Address: {order.address}</div>
+                        <div>Country: {order.country}</div>
                       </div>
-                      <div>Email: {order.email}</div>
-                      <div>Phone: {order.phone}</div>
-                      <div>City: {order.city}</div>
-                      <div>Zip: {order.zip}</div>
-                      <div>Address: {order.address}</div>
-                      <div>Country: {order.country}</div>
+                      <div>
+                        <div className="font-bold">Order Information:</div>
+                        <div>Created At: {order.createdAt.slice(0, 10)}</div>
+                        <div>Paid: {order.paid ? "Yes" : "No"}</div>
+                        <div>Fulfilled: {order.fulfilled ? "Yes" : "No"}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold">Order Information:</div>
-                      <div>Created At: {order.createdAt.slice(0, 10)}</div>
-                      <div>Paid: {order.paid ? "Yes" : "No"}</div>
-                      <div>Fulfilled: {order.fulfilled ? "Yes" : "No"}</div>
-                    </div>
+                    <div className="font-bold mb-2">Products:</div>
+                    {order.line_items.map((item) => (
+                      <div
+                        key={item.price_data.product_data.name}
+                        className="flex justify-between border-b-2  mb-2"
+                      >
+                        <div>{item.price_data.product_data.name}</div>
+                        <div className="flex ml-5 justify-center items-center gap-5">
+                          <div className="">
+                            <p>x{item.quantity}</p>
+                          </div>
+                          <div className="">
+                            <p>${item.price_data.unit_amount / 100}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="font-bold mb-2">Products:</div>
-                  {order.line_items.map((item) => (
-                    <div
-                      key={item.price_data.product_data.name}
-                      className="flex justify-between border-b-2  mb-2"
-                    >
-                      <div>{item.price_data.product_data.name}</div>
-                      <div className="flex ml-5 justify-center items-center gap-5">
-                        <div className="">
-                          <p>x{item.quantity}</p>
-                        </div>
-                        <div className="">
-                          <p>${item.price_data.unit_amount / 100}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                ))}
             </div>
           </>
         )}
@@ -368,32 +377,31 @@ const AccountPage = () => {
       </div>
     );
   }
-if(!session.user.email){
-
-  return (
-    <div className="bg-[#fafafa] p-5 h-screen">
-      <h2 className="text-4xl font-bold text-gray-800">
-        You are not logged in
-      </h2>
-      <p className="text-gray-600">Please log in to access your account.</p>
-      <div className="mt-4 flex justify-center gap-4 items-center">
-        <button
-          onClick={() => router.push("/signup")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
-        >
-          Sign up
-        </button>
-        <p className="text-gray-600 mt-4">or</p>
-        <button
-          onClick={() => router.push("/login")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
-        >
-          Log in
-        </button>
+  if (!session.user.email) {
+    return (
+      <div className="bg-[#fafafa] p-5 h-screen">
+        <h2 className="text-4xl font-bold text-gray-800">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">Please log in to access your account.</p>
+        <div className="mt-4 flex justify-center gap-4 items-center">
+          <button
+            onClick={() => router.push("/signup")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Sign up
+          </button>
+          <p className="text-gray-600 mt-4">or</p>
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Log in
+          </button>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 };
 
 export default AccountPage;

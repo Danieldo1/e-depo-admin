@@ -42,7 +42,7 @@ const Products = ({ products, loading, showNew }) => {
           >
             <Link
               href={`/product/${product._id}`}
-              className="border p-4 rounded-md bg-gray-100 flex flex-col h-[350px] "
+              className="border p-4 rounded-md bg-[#ffffff] flex flex-col h-[350px] "
             >
               {showNew === true ? (
                 <p className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute -top-3 -right-2">

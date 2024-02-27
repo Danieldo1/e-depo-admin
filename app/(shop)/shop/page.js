@@ -201,17 +201,17 @@ const ShopPage = () => {
             >
               <Link
                 href={`/product/${product._id}`}
-                className="border p-4 rounded-md bg-gray-100 flex flex-col relative h-[370px] "
+                className="border p-4 rounded-md bg-[#ffffff] flex flex-col relative h-[370px] "
               >
                 <button
                   onClick={(e) => handleLikeClick(e, product._id)}
-                  className="h-6 absolute top-0 right-0 z-30"
+                  className="h-6 absolute top-5 right-5 z-30"
                 >
                   <Heart
                     className={
                       wishList.includes(product._id)
-                        ? "text-red-500"
-                        : "text-gray-900"
+                        ? "text-red-500 w-9 h-9"
+                        : "text-red-500 w-9 h-9"
                     }
                     fill={wishList.includes(product._id) ? "red" : "none"}
                   />
