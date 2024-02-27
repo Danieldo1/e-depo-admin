@@ -67,6 +67,7 @@ const CategoryPageOne = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-store",
         body: JSON.stringify({ email: session?.user?.email, productId }),
       });
       if (!response.ok) {

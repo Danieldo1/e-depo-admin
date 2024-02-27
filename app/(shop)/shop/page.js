@@ -88,7 +88,7 @@ const ShopPage = () => {
     }
   };
   const newProducts = async () => {
-    await fetch("/api/shopProducts").then((response) => {
+    await fetch("/api/shopProducts",{cache: "no-store"}).then((response) => {
       response.json().then((data) => {
         setProducts(data);
         setLoading(false);

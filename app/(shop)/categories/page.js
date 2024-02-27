@@ -13,12 +13,14 @@ const CategoriesPage = () => {
   }, []);
 
   const allCategories = async () => {
-    await fetch("/api/shopCategories").then((response) => {
-      response.json().then((data) => {
-        setCategories(data);
-        setLoading(false);
-      });
-    });
+    await fetch("/api/shopCategories", { cache: "no-store" }).then(
+      (response) => {
+        response.json().then((data) => {
+          setCategories(data);
+          setLoading(false);
+        });
+      }
+    );
   };
 
   return (

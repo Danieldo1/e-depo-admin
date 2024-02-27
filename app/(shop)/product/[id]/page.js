@@ -35,15 +35,17 @@ const ProductPage = () => {
     }
   }, [item]);
   const fetchOneItem = async () => {
-    await fetch(`/api/products/byID?id=${id}`).then((response) => {
-      response.json().then((data) => {
-        setItem(data);
-      });
-    });
+    await fetch(`/api/products/byID?id=${id}`, { cache: "no-store" }).then(
+      (response) => {
+        response.json().then((data) => {
+          setItem(data);
+        });
+      }
+    );
   };
 
   const fetchOneCategory = async () => {
-    await fetch(`/api/shopCategories/byID?id=${item.category}`).then(
+    await fetch(`/api/shopCategories/byID?id=${item.category}`,{cache: "no-store"}).then(
       (response) => {
         response.json().then((data) => {
           setCategory(data);

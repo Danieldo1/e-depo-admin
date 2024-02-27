@@ -103,6 +103,7 @@ const AccountPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-store",
         body: JSON.stringify({ email: session?.user?.email, productId }),
       });
       if (!response.ok) {
@@ -367,7 +368,7 @@ const AccountPage = () => {
       </div>
     );
   }
-if(!session){
+if(!session.user.email){
 
   return (
     <div className="bg-[#fafafa] p-5 h-screen">
