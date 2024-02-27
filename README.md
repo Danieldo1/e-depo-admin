@@ -55,7 +55,7 @@ The result is a fully realized e-commerce platform that stands out in the digita
 
 ## Screenshots
 ### Admin Dashboard
-<img src="/public/screenshots/admin/s1.png" width="400" height="200"/> <img src="/public/screenshots/admin/s2.png" width="400" height="200"/> <img src="/public/screenshots/admin/s3.png" width="400" height="200"/> <img src="/public/screenshots/admin/s4.png" width="400" height="200"/>  <img src="/public/screenshots/admin/s5.png" width="400" height="200"/> <img src="/public/screenshots/admin/s6.png" width="400" height="200"/> <img src="/public/screenshots/admin/s7.png" width="400" height="200"/> 
+<img src="/public/screenshots/admin/s8.png" width="400" /> <img src="/public/screenshots/admin/s1.png" width="400" height="200"/> <img src="/public/screenshots/admin/s2.png" width="400" height="200"/> <img src="/public/screenshots/admin/s3.png" width="400" height="200"/> <img src="/public/screenshots/admin/s4.png" width="400" height="200"/>  <img src="/public/screenshots/admin/s5.png" width="400" height="200"/> <img src="/public/screenshots/admin/s6.png" width="400" height="200"/> <img src="/public/screenshots/admin/s7.png" width="400" height="200"/> 
 
 ### E-commerce Front
 
