@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import Link from "next/link";
-import { Trash2, UploadCloud,Loader2 } from "lucide-react";
+import { Trash2, UploadCloud, Loader2, Grip } from "lucide-react";
 import { withSwal } from "react-sweetalert2";
+import { ReactSortable } from "react-sortablejs";
 
-
- function CategoryPage({ swal }) {
+function CategoryPage({ swal }) {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parent, setParent] = useState("");
@@ -17,9 +17,8 @@ import { withSwal } from "react-sweetalert2";
   useEffect(() => {
     fetchCategories();
   }, []);
-  
+
   const fetchCategories = async () => {
-    
     await fetch("/api/category").then((response) => {
       response.json().then((data) => {
         setCategories(data);
@@ -38,6 +37,7 @@ import { withSwal } from "react-sweetalert2";
       })),
       // Use the first image if it exists, otherwise keep the existing image
       image: images.length > 0 ? images[0] : editing?.image || undefined,
+     
     };
     if (editing) {
       await fetch(`/api/category`, {
@@ -83,20 +83,20 @@ import { withSwal } from "react-sweetalert2";
     fetchCategories();
   };
 
-const editCategory = async (category) => {
-  setEditing(category);
-  setName(category.name);
-  setParent(category.parent ? category.parent._id : "");
-  setProperties(
-    category.properties.map((p) => ({
-      name: p.name,
-      // Ensure that the value is a comma-separated string
-      value: Array.isArray(p.value) ? p.value.join(",") : p.value,
-    }))
-  );
-  
-  setImages(category.image ? [category.image] : []);
-};
+  const editCategory = async (category) => {
+    setEditing(category);
+    setName(category.name);
+    setParent(category.parent ? category.parent._id : "");
+    setProperties(
+      category.properties.map((p) => ({
+        name: p.name,
+        // Ensure that the value is a comma-separated string
+        value: Array.isArray(p.value) ? p.value.join(",") : p.value,
+      }))
+    );
+
+    setImages(category.image ? [category.image] : []);
+  };
 
   const deleteCategory = async (category) => {
     await fetch(`/api/category`, {
@@ -132,31 +132,68 @@ const editCategory = async (category) => {
   };
 
   const uploadPhotos = async (e) => {
-   const files = e.target.files;
-   if (files?.length > 0) {
-     setUploading(true);
-     const data = new FormData();
-     for (const file of files) {
-       data.append("file", file);
-     }
-     const res = await fetch("/api/upload", {
-       method: "POST",
-       body: data,
-     });
+    const files = e.target.files;
+    if (files?.length > 0) {
+      setUploading(true);
+      const data = new FormData();
+      for (const file of files) {
+        data.append("file", file);
+      }
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
 
-     const link = await res.json();
-     setUploading(false);
-     setImages((prev) => {
-       return [...prev, ...link];
-     })
-   }
-}
+      const link = await res.json();
+      setUploading(false);
+      setImages((prev) => {
+        return [...prev, ...link];
+      });
+    }
+  };
 
- const handleDeleteImage = (index) => {
-   setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+  const handleDeleteImage = (index) => {
+    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+  };
+
+ const handleSortEnd = async ({ oldIndex, newIndex }) => {
+  //  const updatedCategories = categories.map((category, index) => ({
+  //    ...category,
+  //    order: index,
+  //  }));
+
+   const arrayMove = (array, oldIndex, newIndex) => {
+     const newArray = array.slice();
+     newArray.splice(newIndex, 0, newArray.splice(oldIndex, 1)[0]);
+     return newArray;
+   };
+
+    const updatedCategories = arrayMove(categories, oldIndex, newIndex);
+
+
+  // const payload = updatedCategories.map(({ _id, order }) => ({ _id, order }));
+
+  //  const payload = updatedCategories.map((category) => ({
+  //    _id: category._id,
+  //    order: category.order,
+  //  }));
+
+  const payload = updatedCategories.map((category) => ({
+    _id: category._id,
+    order: category.order,
+  }));
+
+
+   await fetch("/api/category/update", {
+     method: "PUT",
+     body: JSON.stringify(payload), // Send the array directly
+     headers: {
+       "Content-Type": "application/json",
+     },
+   });
+   setCategories(updatedCategories);
  };
-
-
+  
   return (
     <Layout>
       <h1 className="heading">Category Page</h1>
@@ -165,13 +202,13 @@ const editCategory = async (category) => {
           <div className="btn-upload rounded-md">
             <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
           </div>
-        ): null}
+        ) : null}
         {images.length > 0 ? (
           <div className="flex flex-col gap-2 relative group">
             <label>Category Image</label>
 
             <img
-              src={images || '/no-image.svg'}
+              src={images || "/no-image.svg"}
               alt="Image added to category"
               className="w-48 h-48 object-cover rounded-md"
             />
@@ -309,62 +346,75 @@ const editCategory = async (category) => {
       {!editing && (
         <div className="">
           <h3 className="heading mt-10">Current Categories</h3>
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <div
-                onClick={() => editCategory(category)}
-                key={category._id}
-                className="cursor-pointer"
-              >
-                <div className="flex my-2 gap-4 p-2 bg-gray-50 hover:bg-gray-100 justify-between items-center rounded-md">
-                  <div>
-                    <h1 className="text-xl font-bold">{category.name}</h1>
-                    <p className="text-sm px-1 bg-sky-500 text-white rounded-full font-bold text-center">
-                      {category?.parent?.name}
-                    </p>
-                  </div>
-                  <div className="flex gap-5 items-center">
-                    <div
-                      onClick={() => {
-                        swal
-                          .fire({
-                            title: `Delete ${category.name}?`,
-                            text: "You won't be able to revert this!",
-                            icon: "question",
-                            showCancelButton: true,
-                            confirmButtonColor: "#d33",
-                            cancelButtonColor: "#3085d6",
-                            confirmButtonText: "Yes, delete it!",
-                          })
-                          .then((result) => {
-                            if (result.isConfirmed) {
-                              deleteCategory(category);
-                              swal.fire(
-                                "Deleted!",
-                                "Your category has been deleted.",
-                                "success"
-                              );
-                            } else {
-                              swal.fire(
-                                "Cancelled",
-                                "Your category is safe :)",
-                                "success"
-                              );
-                              setEditing(null);
-                              setName("");
-                              setParent("");
-                              setProperties([]);
-                            }
-                          });
-                      }}
-                      className="bg-red-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-red-600"
-                    >
-                      <Trash2 />
+          <div className="flex flex-col gap-2">
+            <ReactSortable
+              list={categories}
+              setList={setCategories}
+              handle=".handle"
+              animation={150}
+              onMove={handleSortEnd}
+            >
+              {categories.length > 0 &&
+                categories.map((category, index) => (
+                  <div
+                    onClick={() => editCategory(category)}
+                    key={category._id}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex my-2 gap-4 p-2 bg-gray-50 hover:bg-gray-100 justify-between items-center rounded-md">
+                      <div className="handle">
+                        <Grip className="w-6 h-6 cursor-move text-gray-500 hover:text-blue-500" />
+                      </div>
+                      <div>
+                        <h1 className="text-xl font-bold">{category.name}</h1>
+                        <p className="text-sm px-1 bg-sky-500 text-white rounded-full font-bold text-center">
+                          {category?.parent?.name}
+                        </p>
+                      </div>
+                      <div className="flex gap-5 items-center">
+                        <div
+                          onClick={() => {
+                            swal
+                              .fire({
+                                title: `Delete ${category.name}?`,
+                                text: "You won't be able to revert this!",
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonColor: "#d33",
+                                cancelButtonColor: "#3085d6",
+                                confirmButtonText: "Yes, delete it!",
+                              })
+                              .then((result) => {
+                                if (result.isConfirmed) {
+                                  deleteCategory(category);
+                                  swal.fire(
+                                    "Deleted!",
+                                    "Your category has been deleted.",
+                                    "success"
+                                  );
+                                } else {
+                                  swal.fire(
+                                    "Cancelled",
+                                    "Your category is safe :)",
+                                    "success"
+                                  );
+                                  setEditing(null);
+                                  setName("");
+                                  setParent("");
+                                  setProperties([]);
+                                }
+                              });
+                          }}
+                          className="bg-red-500 text-white p-2 rounded-lg items-center flex gap-2 hover:bg-red-600"
+                        >
+                          <Trash2 />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                ))}
+            </ReactSortable>
+          </div>
         </div>
       )}
     </Layout>

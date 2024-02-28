@@ -2,36 +2,33 @@ import { connectDB } from "@/lib/connectDB";
 import { Category } from "@/lib/models/Category";
 import { getServerSession } from "next-auth";
 
-
 export async function GET() {
   await connectDB();
-  const products = await Category.find().populate("parent").sort({ parent: 1 });
+  const products = await Category.find().sort('order')
+  // .populate("parent")
+    // .sort({ parent: 1 });
   return Response.json(products);
 }
 
 export async function POST(req) {
   await connectDB();
-  const { name, parent,properties,image } = await req.json();
-  const newCategory = await Category.create({ 
+  const { name, parent, properties, image, order } = await req.json();
+  const newCategory = await Category.create({
     name,
     parent: parent || undefined,
     properties,
-    image
-
-});
+    image,
+    order,
+  });
   return Response.json(newCategory);
 }
 
 export async function PUT(req) {
   await connectDB();
-  const { _id, name, parent,properties,image } = await req.json();
+  const { _id, name, parent, properties, image, order } = await req.json();
   const updatedCategory = await Category.findOneAndUpdate(
     { _id },
-    { name,
-         parent: parent || undefined,
-        properties,
-        image
-    }
+    { name, parent: parent || undefined, properties, image, order }
   );
   return Response.json(updatedCategory);
 }
