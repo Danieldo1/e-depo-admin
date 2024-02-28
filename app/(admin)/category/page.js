@@ -170,14 +170,6 @@ function CategoryPage({ swal }) {
 
     const updatedCategories = arrayMove(categories, oldIndex, newIndex);
 
-
-  // const payload = updatedCategories.map(({ _id, order }) => ({ _id, order }));
-
-  //  const payload = updatedCategories.map((category) => ({
-  //    _id: category._id,
-  //    order: category.order,
-  //  }));
-
   const payload = updatedCategories.map((category) => ({
     _id: category._id,
     order: category.order,
@@ -186,7 +178,7 @@ function CategoryPage({ swal }) {
 
    await fetch("/api/category/update", {
      method: "PUT",
-     body: JSON.stringify(payload), // Send the array directly
+     body: JSON.stringify(payload), 
      headers: {
        "Content-Type": "application/json",
      },
@@ -361,10 +353,12 @@ function CategoryPage({ swal }) {
                     key={category._id}
                     className="cursor-pointer"
                   >
-                    <div className="flex my-2 gap-4 p-2 bg-gray-50 hover:bg-gray-100 justify-between items-center rounded-md">
+                    <div className="flex my-2 gap-4 p-2 bg-gray-50 hover:bg-gray-100  items-center rounded-md">
                       <div className="handle">
                         <Grip className="w-6 h-6 cursor-move text-gray-500 hover:text-blue-500" />
                       </div>
+                      <div className="flex items-center justify-between gap-2 w-full">
+
                       <div>
                         <h1 className="text-xl font-bold">{category.name}</h1>
                         <p className="text-sm px-1 bg-sky-500 text-white rounded-full font-bold text-center">
@@ -409,6 +403,7 @@ function CategoryPage({ swal }) {
                         >
                           <Trash2 />
                         </div>
+                      </div>
                       </div>
                     </div>
                   </div>
