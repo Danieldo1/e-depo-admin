@@ -58,8 +58,8 @@ const CategoriesPage = () => {
                     alt={category.name}
                     className="w-full h-full object-cover rounded-md"
                   />
-                  <div className="absolute inset-0 z-30 bg-black opacity-30 rounded-md group-hover:opacity-50 transition-all delay-100 duration-300 ease-in"></div>
-                  <h3 className="text-xl md:text-3xl flex items-center z-40 justify-center font-bold text-center text-white capitalize absolute inset-0">
+                  <div className="absolute inset-0 z-30 bg-white opacity-40 rounded-md group-hover:opacity-60 transition-all delay-100 duration-300 ease-in"></div>
+                  <h3 className="text-2xl md:text-3xl flex items-start z-40 justify-center font-extrabold text-center text-black  capitalize absolute inset-0">
                     {category.name}
                   </h3>
                 </div>
